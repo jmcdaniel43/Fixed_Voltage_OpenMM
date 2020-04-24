@@ -1,0 +1,1448 @@
+<ForceField>
+ <AtomTypes>
+  <Type name="nanotubec-C0" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C1" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C2" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C3" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C4" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C5" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C6" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C7" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C8" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C9" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C10" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C11" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C12" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C13" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C14" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C15" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C16" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C17" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C18" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C19" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C20" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C21" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C22" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C23" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C24" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C25" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C26" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C27" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C28" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C29" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C30" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C31" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C32" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C33" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C34" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C35" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C36" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C37" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C38" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C39" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C40" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C41" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C42" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C43" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C44" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C45" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C46" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C47" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C48" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C49" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C50" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C51" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C52" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C53" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C54" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C55" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C56" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C57" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C58" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C59" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C60" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C61" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C62" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C63" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C64" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C65" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C66" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C67" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C68" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C69" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C70" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C71" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C72" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C73" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C74" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C75" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C76" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C77" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C78" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C79" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C80" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C81" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C82" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C83" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C84" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C85" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C86" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C87" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C88" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C89" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C90" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C91" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C92" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C93" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C94" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C95" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C96" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C97" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C98" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C99" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C100" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C101" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C102" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C103" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C104" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C105" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C106" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C107" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C108" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C109" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C110" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C111" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C112" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C113" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C114" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C115" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C116" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C117" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C118" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C119" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C120" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C121" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C122" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C123" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C124" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C125" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C126" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C127" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C128" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C129" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C130" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C131" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C132" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C133" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C134" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C135" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C136" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C137" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C138" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C139" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C140" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C141" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C142" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C143" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C144" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C145" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C146" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C147" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C148" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C149" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C150" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C151" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C152" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C153" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C154" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C155" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C156" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C157" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C158" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C159" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C160" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C161" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C162" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C163" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C164" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C165" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C166" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C167" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C168" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C169" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C170" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C171" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C172" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C173" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C174" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C175" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C176" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C177" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C178" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C179" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C180" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C181" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C182" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C183" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C184" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C185" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C186" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C187" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C188" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C189" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C190" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C191" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C192" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C193" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C194" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C195" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C196" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C197" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C198" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C199" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C200" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C201" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C202" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C203" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C204" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C205" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C206" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C207" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C208" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C209" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C210" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C211" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C212" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C213" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C214" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C215" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C216" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C217" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C218" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C219" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C220" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C221" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C222" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C223" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C224" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C225" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C226" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C227" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C228" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C229" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C230" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C231" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C232" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C233" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C234" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C235" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C236" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C237" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C238" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C239" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C240" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C241" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C242" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C243" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C244" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C245" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C246" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C247" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C248" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C249" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C250" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C251" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C252" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C253" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C254" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C255" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C256" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C257" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C258" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C259" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C260" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C261" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C262" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C263" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C264" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C265" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C266" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C267" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C268" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C269" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C270" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C271" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C272" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C273" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C274" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C275" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C276" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C277" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C278" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C279" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C280" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C281" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C282" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C283" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C284" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C285" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C286" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C287" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C288" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C289" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C290" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C291" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C292" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C293" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C294" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C295" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C296" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C297" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C298" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C299" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C300" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C301" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C302" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C303" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C304" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C305" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C306" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C307" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C308" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C309" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C310" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C311" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C312" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C313" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C314" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C315" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C316" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C317" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C318" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C319" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C320" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C321" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C322" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C323" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C324" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C325" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C326" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C327" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C328" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C329" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C330" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C331" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C332" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C333" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C334" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C335" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C336" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C337" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C338" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C339" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C340" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C341" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C342" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C343" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C344" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C345" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C346" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C347" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C348" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C349" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C350" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C351" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C352" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C353" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C354" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C355" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C356" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C357" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C358" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C359" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C360" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C361" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C362" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C363" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C364" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C365" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C366" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C367" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C368" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C369" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C370" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C371" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C372" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C373" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C374" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C375" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C376" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C377" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C378" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C379" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C380" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C381" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C382" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C383" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C384" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C385" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C386" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C387" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C388" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C389" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C390" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C391" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C392" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C393" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C394" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C395" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C396" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C397" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C398" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C399" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C400" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C401" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C402" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C403" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C404" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C405" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C406" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C407" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C408" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C409" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C410" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C411" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C412" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C413" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C414" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C415" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C416" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C417" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C418" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C419" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C420" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C421" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C422" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C423" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C424" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C425" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C426" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C427" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C428" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C429" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C430" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C431" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C432" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C433" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C434" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C435" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C436" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C437" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C438" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C439" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C440" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C441" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C442" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C443" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C444" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C445" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C446" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C447" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C448" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C449" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C450" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C451" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C452" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C453" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C454" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C455" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C456" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C457" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C458" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C459" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C460" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C461" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C462" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C463" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C464" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C465" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C466" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C467" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C468" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C469" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C470" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C471" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C472" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C473" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C474" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C475" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C476" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C477" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C478" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C479" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C480" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C481" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C482" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C483" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C484" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C485" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C486" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C487" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C488" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C489" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C490" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C491" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C492" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C493" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C494" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C495" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C496" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C497" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C498" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C499" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C500" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C501" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C502" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C503" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C504" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C505" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C506" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C507" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C508" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C509" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C510" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C511" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C512" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C513" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C514" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C515" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C516" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C517" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C518" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C519" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C520" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C521" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C522" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C523" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C524" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C525" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C526" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C527" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C528" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C529" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C530" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C531" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C532" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C533" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C534" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C535" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C536" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C537" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C538" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C539" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C540" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C541" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C542" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C543" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C544" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C545" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C546" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C547" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C548" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C549" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C550" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C551" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C552" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C553" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C554" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C555" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C556" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C557" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C558" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C559" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C560" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C561" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C562" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C563" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C564" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C565" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C566" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C567" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C568" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C569" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C570" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C571" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C572" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C573" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C574" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C575" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C576" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C577" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C578" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C579" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C580" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C581" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C582" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C583" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C584" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C585" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C586" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C587" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C588" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C589" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C590" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C591" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C592" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C593" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C594" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C595" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C596" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C597" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C598" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C599" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C600" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C601" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C602" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C603" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C604" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C605" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C606" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C607" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C608" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C609" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C610" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C611" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C612" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C613" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C614" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C615" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C616" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C617" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C618" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C619" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C620" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C621" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C622" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C623" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C624" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C625" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C626" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C627" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C628" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C629" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C630" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C631" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C632" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C633" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C634" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C635" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C636" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C637" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C638" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C639" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C640" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C641" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C642" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C643" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C644" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C645" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C646" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C647" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C648" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C649" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C650" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C651" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C652" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C653" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C654" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C655" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C656" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C657" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C658" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C659" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C660" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C661" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C662" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C663" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C664" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C665" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C666" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C667" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C668" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C669" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C670" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C671" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C672" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C673" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C674" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C675" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C676" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C677" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C678" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C679" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C680" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C681" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C682" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C683" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C684" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C685" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C686" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C687" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C688" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C689" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C690" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C691" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C692" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C693" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C694" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C695" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C696" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C697" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C698" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C699" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C700" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C701" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C702" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C703" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C704" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C705" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C706" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C707" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C708" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C709" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C710" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C711" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C712" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C713" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C714" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C715" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C716" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C717" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C718" class="Cgtc" element="C" mass="0.0"/>
+  <Type name="nanotubec-C719" class="Cgtc" element="C" mass="0.0"/>
+ </AtomTypes>
+ <Residues>
+  <Residue name="nanc">
+   <Atom name="C0" type="nanotubec-C0"/> 
+   <Atom name="C1" type="nanotubec-C1"/> 
+   <Atom name="C2" type="nanotubec-C2"/> 
+   <Atom name="C3" type="nanotubec-C3"/> 
+   <Atom name="C4" type="nanotubec-C4"/> 
+   <Atom name="C5" type="nanotubec-C5"/> 
+   <Atom name="C6" type="nanotubec-C6"/> 
+   <Atom name="C7" type="nanotubec-C7"/> 
+   <Atom name="C8" type="nanotubec-C8"/> 
+   <Atom name="C9" type="nanotubec-C9"/> 
+   <Atom name="C10" type="nanotubec-C10"/> 
+   <Atom name="C11" type="nanotubec-C11"/> 
+   <Atom name="C12" type="nanotubec-C12"/> 
+   <Atom name="C13" type="nanotubec-C13"/> 
+   <Atom name="C14" type="nanotubec-C14"/> 
+   <Atom name="C15" type="nanotubec-C15"/> 
+   <Atom name="C16" type="nanotubec-C16"/> 
+   <Atom name="C17" type="nanotubec-C17"/> 
+   <Atom name="C18" type="nanotubec-C18"/> 
+   <Atom name="C19" type="nanotubec-C19"/> 
+   <Atom name="C20" type="nanotubec-C20"/> 
+   <Atom name="C21" type="nanotubec-C21"/> 
+   <Atom name="C22" type="nanotubec-C22"/> 
+   <Atom name="C23" type="nanotubec-C23"/> 
+   <Atom name="C24" type="nanotubec-C24"/> 
+   <Atom name="C25" type="nanotubec-C25"/> 
+   <Atom name="C26" type="nanotubec-C26"/> 
+   <Atom name="C27" type="nanotubec-C27"/> 
+   <Atom name="C28" type="nanotubec-C28"/> 
+   <Atom name="C29" type="nanotubec-C29"/> 
+   <Atom name="C30" type="nanotubec-C30"/> 
+   <Atom name="C31" type="nanotubec-C31"/> 
+   <Atom name="C32" type="nanotubec-C32"/> 
+   <Atom name="C33" type="nanotubec-C33"/> 
+   <Atom name="C34" type="nanotubec-C34"/> 
+   <Atom name="C35" type="nanotubec-C35"/> 
+   <Atom name="C36" type="nanotubec-C36"/> 
+   <Atom name="C37" type="nanotubec-C37"/> 
+   <Atom name="C38" type="nanotubec-C38"/> 
+   <Atom name="C39" type="nanotubec-C39"/> 
+   <Atom name="C40" type="nanotubec-C40"/> 
+   <Atom name="C41" type="nanotubec-C41"/> 
+   <Atom name="C42" type="nanotubec-C42"/> 
+   <Atom name="C43" type="nanotubec-C43"/> 
+   <Atom name="C44" type="nanotubec-C44"/> 
+   <Atom name="C45" type="nanotubec-C45"/> 
+   <Atom name="C46" type="nanotubec-C46"/> 
+   <Atom name="C47" type="nanotubec-C47"/> 
+   <Atom name="C48" type="nanotubec-C48"/> 
+   <Atom name="C49" type="nanotubec-C49"/> 
+   <Atom name="C50" type="nanotubec-C50"/> 
+   <Atom name="C51" type="nanotubec-C51"/> 
+   <Atom name="C52" type="nanotubec-C52"/> 
+   <Atom name="C53" type="nanotubec-C53"/> 
+   <Atom name="C54" type="nanotubec-C54"/> 
+   <Atom name="C55" type="nanotubec-C55"/> 
+   <Atom name="C56" type="nanotubec-C56"/> 
+   <Atom name="C57" type="nanotubec-C57"/> 
+   <Atom name="C58" type="nanotubec-C58"/> 
+   <Atom name="C59" type="nanotubec-C59"/> 
+   <Atom name="C60" type="nanotubec-C60"/> 
+   <Atom name="C61" type="nanotubec-C61"/> 
+   <Atom name="C62" type="nanotubec-C62"/> 
+   <Atom name="C63" type="nanotubec-C63"/> 
+   <Atom name="C64" type="nanotubec-C64"/> 
+   <Atom name="C65" type="nanotubec-C65"/> 
+   <Atom name="C66" type="nanotubec-C66"/> 
+   <Atom name="C67" type="nanotubec-C67"/> 
+   <Atom name="C68" type="nanotubec-C68"/> 
+   <Atom name="C69" type="nanotubec-C69"/> 
+   <Atom name="C70" type="nanotubec-C70"/> 
+   <Atom name="C71" type="nanotubec-C71"/> 
+   <Atom name="C72" type="nanotubec-C72"/> 
+   <Atom name="C73" type="nanotubec-C73"/> 
+   <Atom name="C74" type="nanotubec-C74"/> 
+   <Atom name="C75" type="nanotubec-C75"/> 
+   <Atom name="C76" type="nanotubec-C76"/> 
+   <Atom name="C77" type="nanotubec-C77"/> 
+   <Atom name="C78" type="nanotubec-C78"/> 
+   <Atom name="C79" type="nanotubec-C79"/> 
+   <Atom name="C80" type="nanotubec-C80"/> 
+   <Atom name="C81" type="nanotubec-C81"/> 
+   <Atom name="C82" type="nanotubec-C82"/> 
+   <Atom name="C83" type="nanotubec-C83"/> 
+   <Atom name="C84" type="nanotubec-C84"/> 
+   <Atom name="C85" type="nanotubec-C85"/> 
+   <Atom name="C86" type="nanotubec-C86"/> 
+   <Atom name="C87" type="nanotubec-C87"/> 
+   <Atom name="C88" type="nanotubec-C88"/> 
+   <Atom name="C89" type="nanotubec-C89"/> 
+   <Atom name="C90" type="nanotubec-C90"/> 
+   <Atom name="C91" type="nanotubec-C91"/> 
+   <Atom name="C92" type="nanotubec-C92"/> 
+   <Atom name="C93" type="nanotubec-C93"/> 
+   <Atom name="C94" type="nanotubec-C94"/> 
+   <Atom name="C95" type="nanotubec-C95"/> 
+   <Atom name="C96" type="nanotubec-C96"/> 
+   <Atom name="C97" type="nanotubec-C97"/> 
+   <Atom name="C98" type="nanotubec-C98"/> 
+   <Atom name="C99" type="nanotubec-C99"/> 
+   <Atom name="C100" type="nanotubec-C100"/> 
+   <Atom name="C101" type="nanotubec-C101"/> 
+   <Atom name="C102" type="nanotubec-C102"/> 
+   <Atom name="C103" type="nanotubec-C103"/> 
+   <Atom name="C104" type="nanotubec-C104"/> 
+   <Atom name="C105" type="nanotubec-C105"/> 
+   <Atom name="C106" type="nanotubec-C106"/> 
+   <Atom name="C107" type="nanotubec-C107"/> 
+   <Atom name="C108" type="nanotubec-C108"/> 
+   <Atom name="C109" type="nanotubec-C109"/> 
+   <Atom name="C110" type="nanotubec-C110"/> 
+   <Atom name="C111" type="nanotubec-C111"/> 
+   <Atom name="C112" type="nanotubec-C112"/> 
+   <Atom name="C113" type="nanotubec-C113"/> 
+   <Atom name="C114" type="nanotubec-C114"/> 
+   <Atom name="C115" type="nanotubec-C115"/> 
+   <Atom name="C116" type="nanotubec-C116"/> 
+   <Atom name="C117" type="nanotubec-C117"/> 
+   <Atom name="C118" type="nanotubec-C118"/> 
+   <Atom name="C119" type="nanotubec-C119"/> 
+   <Atom name="C120" type="nanotubec-C120"/> 
+   <Atom name="C121" type="nanotubec-C121"/> 
+   <Atom name="C122" type="nanotubec-C122"/> 
+   <Atom name="C123" type="nanotubec-C123"/> 
+   <Atom name="C124" type="nanotubec-C124"/> 
+   <Atom name="C125" type="nanotubec-C125"/> 
+   <Atom name="C126" type="nanotubec-C126"/> 
+   <Atom name="C127" type="nanotubec-C127"/> 
+   <Atom name="C128" type="nanotubec-C128"/> 
+   <Atom name="C129" type="nanotubec-C129"/> 
+   <Atom name="C130" type="nanotubec-C130"/> 
+   <Atom name="C131" type="nanotubec-C131"/> 
+   <Atom name="C132" type="nanotubec-C132"/> 
+   <Atom name="C133" type="nanotubec-C133"/> 
+   <Atom name="C134" type="nanotubec-C134"/> 
+   <Atom name="C135" type="nanotubec-C135"/> 
+   <Atom name="C136" type="nanotubec-C136"/> 
+   <Atom name="C137" type="nanotubec-C137"/> 
+   <Atom name="C138" type="nanotubec-C138"/> 
+   <Atom name="C139" type="nanotubec-C139"/> 
+   <Atom name="C140" type="nanotubec-C140"/> 
+   <Atom name="C141" type="nanotubec-C141"/> 
+   <Atom name="C142" type="nanotubec-C142"/> 
+   <Atom name="C143" type="nanotubec-C143"/> 
+   <Atom name="C144" type="nanotubec-C144"/> 
+   <Atom name="C145" type="nanotubec-C145"/> 
+   <Atom name="C146" type="nanotubec-C146"/> 
+   <Atom name="C147" type="nanotubec-C147"/> 
+   <Atom name="C148" type="nanotubec-C148"/> 
+   <Atom name="C149" type="nanotubec-C149"/> 
+   <Atom name="C150" type="nanotubec-C150"/> 
+   <Atom name="C151" type="nanotubec-C151"/> 
+   <Atom name="C152" type="nanotubec-C152"/> 
+   <Atom name="C153" type="nanotubec-C153"/> 
+   <Atom name="C154" type="nanotubec-C154"/> 
+   <Atom name="C155" type="nanotubec-C155"/> 
+   <Atom name="C156" type="nanotubec-C156"/> 
+   <Atom name="C157" type="nanotubec-C157"/> 
+   <Atom name="C158" type="nanotubec-C158"/> 
+   <Atom name="C159" type="nanotubec-C159"/> 
+   <Atom name="C160" type="nanotubec-C160"/> 
+   <Atom name="C161" type="nanotubec-C161"/> 
+   <Atom name="C162" type="nanotubec-C162"/> 
+   <Atom name="C163" type="nanotubec-C163"/> 
+   <Atom name="C164" type="nanotubec-C164"/> 
+   <Atom name="C165" type="nanotubec-C165"/> 
+   <Atom name="C166" type="nanotubec-C166"/> 
+   <Atom name="C167" type="nanotubec-C167"/> 
+   <Atom name="C168" type="nanotubec-C168"/> 
+   <Atom name="C169" type="nanotubec-C169"/> 
+   <Atom name="C170" type="nanotubec-C170"/> 
+   <Atom name="C171" type="nanotubec-C171"/> 
+   <Atom name="C172" type="nanotubec-C172"/> 
+   <Atom name="C173" type="nanotubec-C173"/> 
+   <Atom name="C174" type="nanotubec-C174"/> 
+   <Atom name="C175" type="nanotubec-C175"/> 
+   <Atom name="C176" type="nanotubec-C176"/> 
+   <Atom name="C177" type="nanotubec-C177"/> 
+   <Atom name="C178" type="nanotubec-C178"/> 
+   <Atom name="C179" type="nanotubec-C179"/> 
+   <Atom name="C180" type="nanotubec-C180"/> 
+   <Atom name="C181" type="nanotubec-C181"/> 
+   <Atom name="C182" type="nanotubec-C182"/> 
+   <Atom name="C183" type="nanotubec-C183"/> 
+   <Atom name="C184" type="nanotubec-C184"/> 
+   <Atom name="C185" type="nanotubec-C185"/> 
+   <Atom name="C186" type="nanotubec-C186"/> 
+   <Atom name="C187" type="nanotubec-C187"/> 
+   <Atom name="C188" type="nanotubec-C188"/> 
+   <Atom name="C189" type="nanotubec-C189"/> 
+   <Atom name="C190" type="nanotubec-C190"/> 
+   <Atom name="C191" type="nanotubec-C191"/> 
+   <Atom name="C192" type="nanotubec-C192"/> 
+   <Atom name="C193" type="nanotubec-C193"/> 
+   <Atom name="C194" type="nanotubec-C194"/> 
+   <Atom name="C195" type="nanotubec-C195"/> 
+   <Atom name="C196" type="nanotubec-C196"/> 
+   <Atom name="C197" type="nanotubec-C197"/> 
+   <Atom name="C198" type="nanotubec-C198"/> 
+   <Atom name="C199" type="nanotubec-C199"/> 
+   <Atom name="C200" type="nanotubec-C200"/> 
+   <Atom name="C201" type="nanotubec-C201"/> 
+   <Atom name="C202" type="nanotubec-C202"/> 
+   <Atom name="C203" type="nanotubec-C203"/> 
+   <Atom name="C204" type="nanotubec-C204"/> 
+   <Atom name="C205" type="nanotubec-C205"/> 
+   <Atom name="C206" type="nanotubec-C206"/> 
+   <Atom name="C207" type="nanotubec-C207"/> 
+   <Atom name="C208" type="nanotubec-C208"/> 
+   <Atom name="C209" type="nanotubec-C209"/> 
+   <Atom name="C210" type="nanotubec-C210"/> 
+   <Atom name="C211" type="nanotubec-C211"/> 
+   <Atom name="C212" type="nanotubec-C212"/> 
+   <Atom name="C213" type="nanotubec-C213"/> 
+   <Atom name="C214" type="nanotubec-C214"/> 
+   <Atom name="C215" type="nanotubec-C215"/> 
+   <Atom name="C216" type="nanotubec-C216"/> 
+   <Atom name="C217" type="nanotubec-C217"/> 
+   <Atom name="C218" type="nanotubec-C218"/> 
+   <Atom name="C219" type="nanotubec-C219"/> 
+   <Atom name="C220" type="nanotubec-C220"/> 
+   <Atom name="C221" type="nanotubec-C221"/> 
+   <Atom name="C222" type="nanotubec-C222"/> 
+   <Atom name="C223" type="nanotubec-C223"/> 
+   <Atom name="C224" type="nanotubec-C224"/> 
+   <Atom name="C225" type="nanotubec-C225"/> 
+   <Atom name="C226" type="nanotubec-C226"/> 
+   <Atom name="C227" type="nanotubec-C227"/> 
+   <Atom name="C228" type="nanotubec-C228"/> 
+   <Atom name="C229" type="nanotubec-C229"/> 
+   <Atom name="C230" type="nanotubec-C230"/> 
+   <Atom name="C231" type="nanotubec-C231"/> 
+   <Atom name="C232" type="nanotubec-C232"/> 
+   <Atom name="C233" type="nanotubec-C233"/> 
+   <Atom name="C234" type="nanotubec-C234"/> 
+   <Atom name="C235" type="nanotubec-C235"/> 
+   <Atom name="C236" type="nanotubec-C236"/> 
+   <Atom name="C237" type="nanotubec-C237"/> 
+   <Atom name="C238" type="nanotubec-C238"/> 
+   <Atom name="C239" type="nanotubec-C239"/> 
+   <Atom name="C240" type="nanotubec-C240"/> 
+   <Atom name="C241" type="nanotubec-C241"/> 
+   <Atom name="C242" type="nanotubec-C242"/> 
+   <Atom name="C243" type="nanotubec-C243"/> 
+   <Atom name="C244" type="nanotubec-C244"/> 
+   <Atom name="C245" type="nanotubec-C245"/> 
+   <Atom name="C246" type="nanotubec-C246"/> 
+   <Atom name="C247" type="nanotubec-C247"/> 
+   <Atom name="C248" type="nanotubec-C248"/> 
+   <Atom name="C249" type="nanotubec-C249"/> 
+   <Atom name="C250" type="nanotubec-C250"/> 
+   <Atom name="C251" type="nanotubec-C251"/> 
+   <Atom name="C252" type="nanotubec-C252"/> 
+   <Atom name="C253" type="nanotubec-C253"/> 
+   <Atom name="C254" type="nanotubec-C254"/> 
+   <Atom name="C255" type="nanotubec-C255"/> 
+   <Atom name="C256" type="nanotubec-C256"/> 
+   <Atom name="C257" type="nanotubec-C257"/> 
+   <Atom name="C258" type="nanotubec-C258"/> 
+   <Atom name="C259" type="nanotubec-C259"/> 
+   <Atom name="C260" type="nanotubec-C260"/> 
+   <Atom name="C261" type="nanotubec-C261"/> 
+   <Atom name="C262" type="nanotubec-C262"/> 
+   <Atom name="C263" type="nanotubec-C263"/> 
+   <Atom name="C264" type="nanotubec-C264"/> 
+   <Atom name="C265" type="nanotubec-C265"/> 
+   <Atom name="C266" type="nanotubec-C266"/> 
+   <Atom name="C267" type="nanotubec-C267"/> 
+   <Atom name="C268" type="nanotubec-C268"/> 
+   <Atom name="C269" type="nanotubec-C269"/> 
+   <Atom name="C270" type="nanotubec-C270"/> 
+   <Atom name="C271" type="nanotubec-C271"/> 
+   <Atom name="C272" type="nanotubec-C272"/> 
+   <Atom name="C273" type="nanotubec-C273"/> 
+   <Atom name="C274" type="nanotubec-C274"/> 
+   <Atom name="C275" type="nanotubec-C275"/> 
+   <Atom name="C276" type="nanotubec-C276"/> 
+   <Atom name="C277" type="nanotubec-C277"/> 
+   <Atom name="C278" type="nanotubec-C278"/> 
+   <Atom name="C279" type="nanotubec-C279"/> 
+   <Atom name="C280" type="nanotubec-C280"/> 
+   <Atom name="C281" type="nanotubec-C281"/> 
+   <Atom name="C282" type="nanotubec-C282"/> 
+   <Atom name="C283" type="nanotubec-C283"/> 
+   <Atom name="C284" type="nanotubec-C284"/> 
+   <Atom name="C285" type="nanotubec-C285"/> 
+   <Atom name="C286" type="nanotubec-C286"/> 
+   <Atom name="C287" type="nanotubec-C287"/> 
+   <Atom name="C288" type="nanotubec-C288"/> 
+   <Atom name="C289" type="nanotubec-C289"/> 
+   <Atom name="C290" type="nanotubec-C290"/> 
+   <Atom name="C291" type="nanotubec-C291"/> 
+   <Atom name="C292" type="nanotubec-C292"/> 
+   <Atom name="C293" type="nanotubec-C293"/> 
+   <Atom name="C294" type="nanotubec-C294"/> 
+   <Atom name="C295" type="nanotubec-C295"/> 
+   <Atom name="C296" type="nanotubec-C296"/> 
+   <Atom name="C297" type="nanotubec-C297"/> 
+   <Atom name="C298" type="nanotubec-C298"/> 
+   <Atom name="C299" type="nanotubec-C299"/> 
+   <Atom name="C300" type="nanotubec-C300"/> 
+   <Atom name="C301" type="nanotubec-C301"/> 
+   <Atom name="C302" type="nanotubec-C302"/> 
+   <Atom name="C303" type="nanotubec-C303"/> 
+   <Atom name="C304" type="nanotubec-C304"/> 
+   <Atom name="C305" type="nanotubec-C305"/> 
+   <Atom name="C306" type="nanotubec-C306"/> 
+   <Atom name="C307" type="nanotubec-C307"/> 
+   <Atom name="C308" type="nanotubec-C308"/> 
+   <Atom name="C309" type="nanotubec-C309"/> 
+   <Atom name="C310" type="nanotubec-C310"/> 
+   <Atom name="C311" type="nanotubec-C311"/> 
+   <Atom name="C312" type="nanotubec-C312"/> 
+   <Atom name="C313" type="nanotubec-C313"/> 
+   <Atom name="C314" type="nanotubec-C314"/> 
+   <Atom name="C315" type="nanotubec-C315"/> 
+   <Atom name="C316" type="nanotubec-C316"/> 
+   <Atom name="C317" type="nanotubec-C317"/> 
+   <Atom name="C318" type="nanotubec-C318"/> 
+   <Atom name="C319" type="nanotubec-C319"/> 
+   <Atom name="C320" type="nanotubec-C320"/> 
+   <Atom name="C321" type="nanotubec-C321"/> 
+   <Atom name="C322" type="nanotubec-C322"/> 
+   <Atom name="C323" type="nanotubec-C323"/> 
+   <Atom name="C324" type="nanotubec-C324"/> 
+   <Atom name="C325" type="nanotubec-C325"/> 
+   <Atom name="C326" type="nanotubec-C326"/> 
+   <Atom name="C327" type="nanotubec-C327"/> 
+   <Atom name="C328" type="nanotubec-C328"/> 
+   <Atom name="C329" type="nanotubec-C329"/> 
+   <Atom name="C330" type="nanotubec-C330"/> 
+   <Atom name="C331" type="nanotubec-C331"/> 
+   <Atom name="C332" type="nanotubec-C332"/> 
+   <Atom name="C333" type="nanotubec-C333"/> 
+   <Atom name="C334" type="nanotubec-C334"/> 
+   <Atom name="C335" type="nanotubec-C335"/> 
+   <Atom name="C336" type="nanotubec-C336"/> 
+   <Atom name="C337" type="nanotubec-C337"/> 
+   <Atom name="C338" type="nanotubec-C338"/> 
+   <Atom name="C339" type="nanotubec-C339"/> 
+   <Atom name="C340" type="nanotubec-C340"/> 
+   <Atom name="C341" type="nanotubec-C341"/> 
+   <Atom name="C342" type="nanotubec-C342"/> 
+   <Atom name="C343" type="nanotubec-C343"/> 
+   <Atom name="C344" type="nanotubec-C344"/> 
+   <Atom name="C345" type="nanotubec-C345"/> 
+   <Atom name="C346" type="nanotubec-C346"/> 
+   <Atom name="C347" type="nanotubec-C347"/> 
+   <Atom name="C348" type="nanotubec-C348"/> 
+   <Atom name="C349" type="nanotubec-C349"/> 
+   <Atom name="C350" type="nanotubec-C350"/> 
+   <Atom name="C351" type="nanotubec-C351"/> 
+   <Atom name="C352" type="nanotubec-C352"/> 
+   <Atom name="C353" type="nanotubec-C353"/> 
+   <Atom name="C354" type="nanotubec-C354"/> 
+   <Atom name="C355" type="nanotubec-C355"/> 
+   <Atom name="C356" type="nanotubec-C356"/> 
+   <Atom name="C357" type="nanotubec-C357"/> 
+   <Atom name="C358" type="nanotubec-C358"/> 
+   <Atom name="C359" type="nanotubec-C359"/> 
+   <Atom name="C360" type="nanotubec-C360"/> 
+   <Atom name="C361" type="nanotubec-C361"/> 
+   <Atom name="C362" type="nanotubec-C362"/> 
+   <Atom name="C363" type="nanotubec-C363"/> 
+   <Atom name="C364" type="nanotubec-C364"/> 
+   <Atom name="C365" type="nanotubec-C365"/> 
+   <Atom name="C366" type="nanotubec-C366"/> 
+   <Atom name="C367" type="nanotubec-C367"/> 
+   <Atom name="C368" type="nanotubec-C368"/> 
+   <Atom name="C369" type="nanotubec-C369"/> 
+   <Atom name="C370" type="nanotubec-C370"/> 
+   <Atom name="C371" type="nanotubec-C371"/> 
+   <Atom name="C372" type="nanotubec-C372"/> 
+   <Atom name="C373" type="nanotubec-C373"/> 
+   <Atom name="C374" type="nanotubec-C374"/> 
+   <Atom name="C375" type="nanotubec-C375"/> 
+   <Atom name="C376" type="nanotubec-C376"/> 
+   <Atom name="C377" type="nanotubec-C377"/> 
+   <Atom name="C378" type="nanotubec-C378"/> 
+   <Atom name="C379" type="nanotubec-C379"/> 
+   <Atom name="C380" type="nanotubec-C380"/> 
+   <Atom name="C381" type="nanotubec-C381"/> 
+   <Atom name="C382" type="nanotubec-C382"/> 
+   <Atom name="C383" type="nanotubec-C383"/> 
+   <Atom name="C384" type="nanotubec-C384"/> 
+   <Atom name="C385" type="nanotubec-C385"/> 
+   <Atom name="C386" type="nanotubec-C386"/> 
+   <Atom name="C387" type="nanotubec-C387"/> 
+   <Atom name="C388" type="nanotubec-C388"/> 
+   <Atom name="C389" type="nanotubec-C389"/> 
+   <Atom name="C390" type="nanotubec-C390"/> 
+   <Atom name="C391" type="nanotubec-C391"/> 
+   <Atom name="C392" type="nanotubec-C392"/> 
+   <Atom name="C393" type="nanotubec-C393"/> 
+   <Atom name="C394" type="nanotubec-C394"/> 
+   <Atom name="C395" type="nanotubec-C395"/> 
+   <Atom name="C396" type="nanotubec-C396"/> 
+   <Atom name="C397" type="nanotubec-C397"/> 
+   <Atom name="C398" type="nanotubec-C398"/> 
+   <Atom name="C399" type="nanotubec-C399"/> 
+   <Atom name="C400" type="nanotubec-C400"/> 
+   <Atom name="C401" type="nanotubec-C401"/> 
+   <Atom name="C402" type="nanotubec-C402"/> 
+   <Atom name="C403" type="nanotubec-C403"/> 
+   <Atom name="C404" type="nanotubec-C404"/> 
+   <Atom name="C405" type="nanotubec-C405"/> 
+   <Atom name="C406" type="nanotubec-C406"/> 
+   <Atom name="C407" type="nanotubec-C407"/> 
+   <Atom name="C408" type="nanotubec-C408"/> 
+   <Atom name="C409" type="nanotubec-C409"/> 
+   <Atom name="C410" type="nanotubec-C410"/> 
+   <Atom name="C411" type="nanotubec-C411"/> 
+   <Atom name="C412" type="nanotubec-C412"/> 
+   <Atom name="C413" type="nanotubec-C413"/> 
+   <Atom name="C414" type="nanotubec-C414"/> 
+   <Atom name="C415" type="nanotubec-C415"/> 
+   <Atom name="C416" type="nanotubec-C416"/> 
+   <Atom name="C417" type="nanotubec-C417"/> 
+   <Atom name="C418" type="nanotubec-C418"/> 
+   <Atom name="C419" type="nanotubec-C419"/> 
+   <Atom name="C420" type="nanotubec-C420"/> 
+   <Atom name="C421" type="nanotubec-C421"/> 
+   <Atom name="C422" type="nanotubec-C422"/> 
+   <Atom name="C423" type="nanotubec-C423"/> 
+   <Atom name="C424" type="nanotubec-C424"/> 
+   <Atom name="C425" type="nanotubec-C425"/> 
+   <Atom name="C426" type="nanotubec-C426"/> 
+   <Atom name="C427" type="nanotubec-C427"/> 
+   <Atom name="C428" type="nanotubec-C428"/> 
+   <Atom name="C429" type="nanotubec-C429"/> 
+   <Atom name="C430" type="nanotubec-C430"/> 
+   <Atom name="C431" type="nanotubec-C431"/> 
+   <Atom name="C432" type="nanotubec-C432"/> 
+   <Atom name="C433" type="nanotubec-C433"/> 
+   <Atom name="C434" type="nanotubec-C434"/> 
+   <Atom name="C435" type="nanotubec-C435"/> 
+   <Atom name="C436" type="nanotubec-C436"/> 
+   <Atom name="C437" type="nanotubec-C437"/> 
+   <Atom name="C438" type="nanotubec-C438"/> 
+   <Atom name="C439" type="nanotubec-C439"/> 
+   <Atom name="C440" type="nanotubec-C440"/> 
+   <Atom name="C441" type="nanotubec-C441"/> 
+   <Atom name="C442" type="nanotubec-C442"/> 
+   <Atom name="C443" type="nanotubec-C443"/> 
+   <Atom name="C444" type="nanotubec-C444"/> 
+   <Atom name="C445" type="nanotubec-C445"/> 
+   <Atom name="C446" type="nanotubec-C446"/> 
+   <Atom name="C447" type="nanotubec-C447"/> 
+   <Atom name="C448" type="nanotubec-C448"/> 
+   <Atom name="C449" type="nanotubec-C449"/> 
+   <Atom name="C450" type="nanotubec-C450"/> 
+   <Atom name="C451" type="nanotubec-C451"/> 
+   <Atom name="C452" type="nanotubec-C452"/> 
+   <Atom name="C453" type="nanotubec-C453"/> 
+   <Atom name="C454" type="nanotubec-C454"/> 
+   <Atom name="C455" type="nanotubec-C455"/> 
+   <Atom name="C456" type="nanotubec-C456"/> 
+   <Atom name="C457" type="nanotubec-C457"/> 
+   <Atom name="C458" type="nanotubec-C458"/> 
+   <Atom name="C459" type="nanotubec-C459"/> 
+   <Atom name="C460" type="nanotubec-C460"/> 
+   <Atom name="C461" type="nanotubec-C461"/> 
+   <Atom name="C462" type="nanotubec-C462"/> 
+   <Atom name="C463" type="nanotubec-C463"/> 
+   <Atom name="C464" type="nanotubec-C464"/> 
+   <Atom name="C465" type="nanotubec-C465"/> 
+   <Atom name="C466" type="nanotubec-C466"/> 
+   <Atom name="C467" type="nanotubec-C467"/> 
+   <Atom name="C468" type="nanotubec-C468"/> 
+   <Atom name="C469" type="nanotubec-C469"/> 
+   <Atom name="C470" type="nanotubec-C470"/> 
+   <Atom name="C471" type="nanotubec-C471"/> 
+   <Atom name="C472" type="nanotubec-C472"/> 
+   <Atom name="C473" type="nanotubec-C473"/> 
+   <Atom name="C474" type="nanotubec-C474"/> 
+   <Atom name="C475" type="nanotubec-C475"/> 
+   <Atom name="C476" type="nanotubec-C476"/> 
+   <Atom name="C477" type="nanotubec-C477"/> 
+   <Atom name="C478" type="nanotubec-C478"/> 
+   <Atom name="C479" type="nanotubec-C479"/> 
+   <Atom name="C480" type="nanotubec-C480"/> 
+   <Atom name="C481" type="nanotubec-C481"/> 
+   <Atom name="C482" type="nanotubec-C482"/> 
+   <Atom name="C483" type="nanotubec-C483"/> 
+   <Atom name="C484" type="nanotubec-C484"/> 
+   <Atom name="C485" type="nanotubec-C485"/> 
+   <Atom name="C486" type="nanotubec-C486"/> 
+   <Atom name="C487" type="nanotubec-C487"/> 
+   <Atom name="C488" type="nanotubec-C488"/> 
+   <Atom name="C489" type="nanotubec-C489"/> 
+   <Atom name="C490" type="nanotubec-C490"/> 
+   <Atom name="C491" type="nanotubec-C491"/> 
+   <Atom name="C492" type="nanotubec-C492"/> 
+   <Atom name="C493" type="nanotubec-C493"/> 
+   <Atom name="C494" type="nanotubec-C494"/> 
+   <Atom name="C495" type="nanotubec-C495"/> 
+   <Atom name="C496" type="nanotubec-C496"/> 
+   <Atom name="C497" type="nanotubec-C497"/> 
+   <Atom name="C498" type="nanotubec-C498"/> 
+   <Atom name="C499" type="nanotubec-C499"/> 
+   <Atom name="C500" type="nanotubec-C500"/> 
+   <Atom name="C501" type="nanotubec-C501"/> 
+   <Atom name="C502" type="nanotubec-C502"/> 
+   <Atom name="C503" type="nanotubec-C503"/> 
+   <Atom name="C504" type="nanotubec-C504"/> 
+   <Atom name="C505" type="nanotubec-C505"/> 
+   <Atom name="C506" type="nanotubec-C506"/> 
+   <Atom name="C507" type="nanotubec-C507"/> 
+   <Atom name="C508" type="nanotubec-C508"/> 
+   <Atom name="C509" type="nanotubec-C509"/> 
+   <Atom name="C510" type="nanotubec-C510"/> 
+   <Atom name="C511" type="nanotubec-C511"/> 
+   <Atom name="C512" type="nanotubec-C512"/> 
+   <Atom name="C513" type="nanotubec-C513"/> 
+   <Atom name="C514" type="nanotubec-C514"/> 
+   <Atom name="C515" type="nanotubec-C515"/> 
+   <Atom name="C516" type="nanotubec-C516"/> 
+   <Atom name="C517" type="nanotubec-C517"/> 
+   <Atom name="C518" type="nanotubec-C518"/> 
+   <Atom name="C519" type="nanotubec-C519"/> 
+   <Atom name="C520" type="nanotubec-C520"/> 
+   <Atom name="C521" type="nanotubec-C521"/> 
+   <Atom name="C522" type="nanotubec-C522"/> 
+   <Atom name="C523" type="nanotubec-C523"/> 
+   <Atom name="C524" type="nanotubec-C524"/> 
+   <Atom name="C525" type="nanotubec-C525"/> 
+   <Atom name="C526" type="nanotubec-C526"/> 
+   <Atom name="C527" type="nanotubec-C527"/> 
+   <Atom name="C528" type="nanotubec-C528"/> 
+   <Atom name="C529" type="nanotubec-C529"/> 
+   <Atom name="C530" type="nanotubec-C530"/> 
+   <Atom name="C531" type="nanotubec-C531"/> 
+   <Atom name="C532" type="nanotubec-C532"/> 
+   <Atom name="C533" type="nanotubec-C533"/> 
+   <Atom name="C534" type="nanotubec-C534"/> 
+   <Atom name="C535" type="nanotubec-C535"/> 
+   <Atom name="C536" type="nanotubec-C536"/> 
+   <Atom name="C537" type="nanotubec-C537"/> 
+   <Atom name="C538" type="nanotubec-C538"/> 
+   <Atom name="C539" type="nanotubec-C539"/> 
+   <Atom name="C540" type="nanotubec-C540"/> 
+   <Atom name="C541" type="nanotubec-C541"/> 
+   <Atom name="C542" type="nanotubec-C542"/> 
+   <Atom name="C543" type="nanotubec-C543"/> 
+   <Atom name="C544" type="nanotubec-C544"/> 
+   <Atom name="C545" type="nanotubec-C545"/> 
+   <Atom name="C546" type="nanotubec-C546"/> 
+   <Atom name="C547" type="nanotubec-C547"/> 
+   <Atom name="C548" type="nanotubec-C548"/> 
+   <Atom name="C549" type="nanotubec-C549"/> 
+   <Atom name="C550" type="nanotubec-C550"/> 
+   <Atom name="C551" type="nanotubec-C551"/> 
+   <Atom name="C552" type="nanotubec-C552"/> 
+   <Atom name="C553" type="nanotubec-C553"/> 
+   <Atom name="C554" type="nanotubec-C554"/> 
+   <Atom name="C555" type="nanotubec-C555"/> 
+   <Atom name="C556" type="nanotubec-C556"/> 
+   <Atom name="C557" type="nanotubec-C557"/> 
+   <Atom name="C558" type="nanotubec-C558"/> 
+   <Atom name="C559" type="nanotubec-C559"/> 
+   <Atom name="C560" type="nanotubec-C560"/> 
+   <Atom name="C561" type="nanotubec-C561"/> 
+   <Atom name="C562" type="nanotubec-C562"/> 
+   <Atom name="C563" type="nanotubec-C563"/> 
+   <Atom name="C564" type="nanotubec-C564"/> 
+   <Atom name="C565" type="nanotubec-C565"/> 
+   <Atom name="C566" type="nanotubec-C566"/> 
+   <Atom name="C567" type="nanotubec-C567"/> 
+   <Atom name="C568" type="nanotubec-C568"/> 
+   <Atom name="C569" type="nanotubec-C569"/> 
+   <Atom name="C570" type="nanotubec-C570"/> 
+   <Atom name="C571" type="nanotubec-C571"/> 
+   <Atom name="C572" type="nanotubec-C572"/> 
+   <Atom name="C573" type="nanotubec-C573"/> 
+   <Atom name="C574" type="nanotubec-C574"/> 
+   <Atom name="C575" type="nanotubec-C575"/> 
+   <Atom name="C576" type="nanotubec-C576"/> 
+   <Atom name="C577" type="nanotubec-C577"/> 
+   <Atom name="C578" type="nanotubec-C578"/> 
+   <Atom name="C579" type="nanotubec-C579"/> 
+   <Atom name="C580" type="nanotubec-C580"/> 
+   <Atom name="C581" type="nanotubec-C581"/> 
+   <Atom name="C582" type="nanotubec-C582"/> 
+   <Atom name="C583" type="nanotubec-C583"/> 
+   <Atom name="C584" type="nanotubec-C584"/> 
+   <Atom name="C585" type="nanotubec-C585"/> 
+   <Atom name="C586" type="nanotubec-C586"/> 
+   <Atom name="C587" type="nanotubec-C587"/> 
+   <Atom name="C588" type="nanotubec-C588"/> 
+   <Atom name="C589" type="nanotubec-C589"/> 
+   <Atom name="C590" type="nanotubec-C590"/> 
+   <Atom name="C591" type="nanotubec-C591"/> 
+   <Atom name="C592" type="nanotubec-C592"/> 
+   <Atom name="C593" type="nanotubec-C593"/> 
+   <Atom name="C594" type="nanotubec-C594"/> 
+   <Atom name="C595" type="nanotubec-C595"/> 
+   <Atom name="C596" type="nanotubec-C596"/> 
+   <Atom name="C597" type="nanotubec-C597"/> 
+   <Atom name="C598" type="nanotubec-C598"/> 
+   <Atom name="C599" type="nanotubec-C599"/> 
+   <Atom name="C600" type="nanotubec-C600"/> 
+   <Atom name="C601" type="nanotubec-C601"/> 
+   <Atom name="C602" type="nanotubec-C602"/> 
+   <Atom name="C603" type="nanotubec-C603"/> 
+   <Atom name="C604" type="nanotubec-C604"/> 
+   <Atom name="C605" type="nanotubec-C605"/> 
+   <Atom name="C606" type="nanotubec-C606"/> 
+   <Atom name="C607" type="nanotubec-C607"/> 
+   <Atom name="C608" type="nanotubec-C608"/> 
+   <Atom name="C609" type="nanotubec-C609"/> 
+   <Atom name="C610" type="nanotubec-C610"/> 
+   <Atom name="C611" type="nanotubec-C611"/> 
+   <Atom name="C612" type="nanotubec-C612"/> 
+   <Atom name="C613" type="nanotubec-C613"/> 
+   <Atom name="C614" type="nanotubec-C614"/> 
+   <Atom name="C615" type="nanotubec-C615"/> 
+   <Atom name="C616" type="nanotubec-C616"/> 
+   <Atom name="C617" type="nanotubec-C617"/> 
+   <Atom name="C618" type="nanotubec-C618"/> 
+   <Atom name="C619" type="nanotubec-C619"/> 
+   <Atom name="C620" type="nanotubec-C620"/> 
+   <Atom name="C621" type="nanotubec-C621"/> 
+   <Atom name="C622" type="nanotubec-C622"/> 
+   <Atom name="C623" type="nanotubec-C623"/> 
+   <Atom name="C624" type="nanotubec-C624"/> 
+   <Atom name="C625" type="nanotubec-C625"/> 
+   <Atom name="C626" type="nanotubec-C626"/> 
+   <Atom name="C627" type="nanotubec-C627"/> 
+   <Atom name="C628" type="nanotubec-C628"/> 
+   <Atom name="C629" type="nanotubec-C629"/> 
+   <Atom name="C630" type="nanotubec-C630"/> 
+   <Atom name="C631" type="nanotubec-C631"/> 
+   <Atom name="C632" type="nanotubec-C632"/> 
+   <Atom name="C633" type="nanotubec-C633"/> 
+   <Atom name="C634" type="nanotubec-C634"/> 
+   <Atom name="C635" type="nanotubec-C635"/> 
+   <Atom name="C636" type="nanotubec-C636"/> 
+   <Atom name="C637" type="nanotubec-C637"/> 
+   <Atom name="C638" type="nanotubec-C638"/> 
+   <Atom name="C639" type="nanotubec-C639"/> 
+   <Atom name="C640" type="nanotubec-C640"/> 
+   <Atom name="C641" type="nanotubec-C641"/> 
+   <Atom name="C642" type="nanotubec-C642"/> 
+   <Atom name="C643" type="nanotubec-C643"/> 
+   <Atom name="C644" type="nanotubec-C644"/> 
+   <Atom name="C645" type="nanotubec-C645"/> 
+   <Atom name="C646" type="nanotubec-C646"/> 
+   <Atom name="C647" type="nanotubec-C647"/> 
+   <Atom name="C648" type="nanotubec-C648"/> 
+   <Atom name="C649" type="nanotubec-C649"/> 
+   <Atom name="C650" type="nanotubec-C650"/> 
+   <Atom name="C651" type="nanotubec-C651"/> 
+   <Atom name="C652" type="nanotubec-C652"/> 
+   <Atom name="C653" type="nanotubec-C653"/> 
+   <Atom name="C654" type="nanotubec-C654"/> 
+   <Atom name="C655" type="nanotubec-C655"/> 
+   <Atom name="C656" type="nanotubec-C656"/> 
+   <Atom name="C657" type="nanotubec-C657"/> 
+   <Atom name="C658" type="nanotubec-C658"/> 
+   <Atom name="C659" type="nanotubec-C659"/> 
+   <Atom name="C660" type="nanotubec-C660"/> 
+   <Atom name="C661" type="nanotubec-C661"/> 
+   <Atom name="C662" type="nanotubec-C662"/> 
+   <Atom name="C663" type="nanotubec-C663"/> 
+   <Atom name="C664" type="nanotubec-C664"/> 
+   <Atom name="C665" type="nanotubec-C665"/> 
+   <Atom name="C666" type="nanotubec-C666"/> 
+   <Atom name="C667" type="nanotubec-C667"/> 
+   <Atom name="C668" type="nanotubec-C668"/> 
+   <Atom name="C669" type="nanotubec-C669"/> 
+   <Atom name="C670" type="nanotubec-C670"/> 
+   <Atom name="C671" type="nanotubec-C671"/> 
+   <Atom name="C672" type="nanotubec-C672"/> 
+   <Atom name="C673" type="nanotubec-C673"/> 
+   <Atom name="C674" type="nanotubec-C674"/> 
+   <Atom name="C675" type="nanotubec-C675"/> 
+   <Atom name="C676" type="nanotubec-C676"/> 
+   <Atom name="C677" type="nanotubec-C677"/> 
+   <Atom name="C678" type="nanotubec-C678"/> 
+   <Atom name="C679" type="nanotubec-C679"/> 
+   <Atom name="C680" type="nanotubec-C680"/> 
+   <Atom name="C681" type="nanotubec-C681"/> 
+   <Atom name="C682" type="nanotubec-C682"/> 
+   <Atom name="C683" type="nanotubec-C683"/> 
+   <Atom name="C684" type="nanotubec-C684"/> 
+   <Atom name="C685" type="nanotubec-C685"/> 
+   <Atom name="C686" type="nanotubec-C686"/> 
+   <Atom name="C687" type="nanotubec-C687"/> 
+   <Atom name="C688" type="nanotubec-C688"/> 
+   <Atom name="C689" type="nanotubec-C689"/> 
+   <Atom name="C690" type="nanotubec-C690"/> 
+   <Atom name="C691" type="nanotubec-C691"/> 
+   <Atom name="C692" type="nanotubec-C692"/> 
+   <Atom name="C693" type="nanotubec-C693"/> 
+   <Atom name="C694" type="nanotubec-C694"/> 
+   <Atom name="C695" type="nanotubec-C695"/> 
+   <Atom name="C696" type="nanotubec-C696"/> 
+   <Atom name="C697" type="nanotubec-C697"/> 
+   <Atom name="C698" type="nanotubec-C698"/> 
+   <Atom name="C699" type="nanotubec-C699"/> 
+   <Atom name="C700" type="nanotubec-C700"/> 
+   <Atom name="C701" type="nanotubec-C701"/> 
+   <Atom name="C702" type="nanotubec-C702"/> 
+   <Atom name="C703" type="nanotubec-C703"/> 
+   <Atom name="C704" type="nanotubec-C704"/> 
+   <Atom name="C705" type="nanotubec-C705"/> 
+   <Atom name="C706" type="nanotubec-C706"/> 
+   <Atom name="C707" type="nanotubec-C707"/> 
+   <Atom name="C708" type="nanotubec-C708"/> 
+   <Atom name="C709" type="nanotubec-C709"/> 
+   <Atom name="C710" type="nanotubec-C710"/> 
+   <Atom name="C711" type="nanotubec-C711"/> 
+   <Atom name="C712" type="nanotubec-C712"/> 
+   <Atom name="C713" type="nanotubec-C713"/> 
+   <Atom name="C714" type="nanotubec-C714"/> 
+   <Atom name="C715" type="nanotubec-C715"/> 
+   <Atom name="C716" type="nanotubec-C716"/> 
+   <Atom name="C717" type="nanotubec-C717"/> 
+   <Atom name="C718" type="nanotubec-C718"/> 
+   <Atom name="C719" type="nanotubec-C719"/> 
+  </Residue>
+ </Residues>
+</ForceField>
