@@ -93,6 +93,13 @@ class Conductor_Virtual(object):
             print(' to create Electrode_Virtual object, must set electrode_type to either "cathode" or "anode" !')
             sys.exit(0)
         
+        #**** these are only used for conductor objects attached to electrodes, and not flat Electrodes ... Should we introduce a better data structure ???
+        self.Electrode_contact_atom = False # atom object of Electrode contact atom
+        self.close_conductor_Electrode = True
+        # this is threshold for determining whether nearest conductor is "close enough".
+        self.close_conductor_threshold = 1.5 # nanometers, note this is from center of conductor that's why larger value...
+        #*****
+
         # fill this with any extra electrode residues/chains that need exclusions
         self.electrode_extra_exclusions=[]
 
@@ -162,6 +169,65 @@ class Conductor_Virtual(object):
         return sumQ
 
 
+    #*********************************************
+    # This finds the closest contact neighboring conductor/atom to the conductor
+    # Initially, assume the closest contact is either the flat Cathode/Anode.
+    # if this Electrode is too far, then loop over conductors in the conductor list
+    #*********************************************
+    def find_contact_neighbor_conductor( self, positions , r_center , MMsys ):
+
+       # Find Cathode/Anode contact atom.  This is used to Enforce Constant Potential between electrode and this conductor.
+       # Assume that MMsys.Cathode and MMsys.Anode objects have been created (which are of Electrode_Virtual type...)
+       if self.electrode_type == "cathode":
+           Electrode_contact = MMsys.Cathode
+       else:
+           Electrode_contact = MMsys.Anode
+
+       min_dist = 10.0 # something large...
+       # find contact atom based on closest distance to r_center.  The reason we calculate distance based on r_center is that for a nanotube/flat sheet, there is no uniquely defined close-contact atom pair... 
+       # Assume we don't need PBC !!
+       for atom in Electrode_contact.electrode_atoms:
+           dr_atom = numpy.sqrt( ( r_center[0] - positions[atom.atom_index][0]._value )**2 + ( r_center[1] - positions[atom.atom_index][1]._value )**2 + ( r_center[2] - positions[atom.atom_index][2]._value )**2 )
+           if dr_atom < min_dist:
+               self.Electrode_contact_atom = atom
+               min_dist = dr_atom
+
+       # We are likely done here... only evaluate further code if conductor isn't in contact with the primary Electrode(s)...
+       if  min_dist < self.close_conductor_threshold : 
+           self.dr_center_contact = min_dist
+           return False  # indicates that dr_vector isn't returned
+
+       else:
+       # if this loop evaluates, then conductor is in contact with another conductor off the electrode--search the list ...
+           self.close_conductor_Electrode = False  # primary Electrode is not close contact ...
+           print( "Searching Conductors for close-contact distance pair ... ")
+           for Conductor in MMsys.Conductor_list :             
+               # here we can't search based on r_center, because neither conductor is flat... need to do double loop over atom pairs (slow...)
+               for atom1 in self.electrode_atoms:
+                   for atom2 in Conductor.electrode_atoms:
+                       dr_atom = numpy.sqrt( ( positions[atom1.atom_index][0]._value - positions[atom2.atom_index][0]._value )**2 + ( positions[atom1.atom_index][1]._value - positions[atom2.atom_index][1]._value )**2 +( positions[atom1.atom_index][2]._value - positions[atom2.atom_index][2]._value )**2 )
+                       if dr_atom < min_dist:
+                           self.Electrode_contact_atom = atom2
+                           min_dist = dr_atom
+
+
+               # see if this is the close conductor ...
+               if  min_dist < self.close_conductor_threshold :
+                   # compute distance from r_center to this closest atom
+                   # if this is a Nanotube, we will project out component along axis, so return
+                   # displacement vector and self.dr_center_contact will be recomputed within the child class after the projection ...
+                   dr_vector = [0] * 3
+                   for i in range(3):
+                       dr_vector[i] = positions[self.Electrode_contact_atom.atom_index][i]._value - r_center[i]                  
+                   self.dr_center_contact = numpy.sqrt( dr_vector[0]**2 + dr_vector[1]**2 + dr_vector[2]**2 )
+                   return dr_vector
+
+       # if we haven't exited yet, then we have failed to find close conductor ...
+       print( "Failed to find close Conductor for threshold " , self.close_conductor_threshold )
+       sys.exit()
+
+
+
 
 #*********************************
 # this is a child class of Conductor_Virtual parent class, that
@@ -191,6 +257,14 @@ class Electrode_Virtual(Conductor_Virtual):
         crossBox = numpy.cross(boxVecs[0], boxVecs[1])
         self.sheet_area = numpy.dot(crossBox, crossBox)**0.5 / nanometer**2 # divide by nanometer to get rid of units, this is area in nm^2 ...
         self.area_atom = self.sheet_area / self.Natoms # area per atom in nm^2
+
+
+        # FIX:  Currently we assume conductors are placed only on cathode/left electrode of cell.
+        # the below code needs to be generalized if conductors are placed on both cathode/anode,
+        # because for one of these electrodes the normal vector will be along negative Z-axis ...
+        for atom in self.electrode_atoms:
+            atom.nx = 0.0 ; atom.ny = 0.0 ; atom.nz = 1.0
+
 
 
     #*************************
@@ -381,27 +455,8 @@ class Buckyball_Virtual(Conductor_Virtual):
            norm = sqrt( nx**2 + ny**2 + nz**2)
            atom.nx = nx / norm ; atom.ny = ny / norm ; atom.nz = nz / norm
 
-       # Find Cathode/Anode contact atom.  This is used to Enforce Constant Potential between electrode and this conductor.
-       # Assume that MMsys.Cathode and MMsys.Anode objects have been created (which are of Electrode_Virtual type...)
-       if self.electrode_type == "cathode":
-           Electrode_contact = MMsys.Cathode
-       else:
-           Electrode_contact = MMsys.Anode
-       
-       self.Electrode_contact_atom_index=-1 # atom_index for Electrode contact atom
-       min_dist_sq = 10.0 # something large...
-       # find contact atom based on closest x/y projection of r_center.  
-       # Assume we don't need PBC !!
-       for atom in Electrode_contact.electrode_atoms:
-           xy_project_sq = ( self.r_center[0] - positions[atom.atom_index][0]._value )**2 + ( self.r_center[1] - positions[atom.atom_index][1]._value )**2 
-           if xy_project_sq < min_dist_sq:
-               self.Electrode_contact_atom_index = atom.atom_index
-               min_dist_sq = xy_project_sq
-       #print( 'contact' , self.Electrode_contact_atom_index )
-
-       # now compute distance between center of Buckyball and contact atom...
-       index = self.Electrode_contact_atom_index
-       self.dr_center_contact = sqrt( ( self.r_center[0] - positions[index][0]._value )**2 + ( self.r_center[1] - positions[index][1]._value )**2 + ( self.r_center[2] - positions[index][2]._value )**2 )
+       # find close neighbor conductor/atom distance ...
+       self.find_contact_neighbor_conductor( positions , self.r_center , MMsys )
       
 
     # getter for returning the total charge on the electrode real atoms
@@ -427,6 +482,9 @@ class Buckyball_Virtual(Conductor_Virtual):
 class Nanotube_Virtual(Conductor_Virtual):
     def __init__(self, electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element, axis ):
 
+       # this is threshold for determining whether nearest conductor is "close enough".
+       close_conductor_threshold = 1.0 # nanometers
+
        # constructor for Parent...
        super().__init__(electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element)
 
@@ -440,7 +498,6 @@ class Nanotube_Virtual(Conductor_Virtual):
 
        # for now, nanotube axis must be input.  Eventually, write code to automate...
        self.axis = axis
-
 
        # In this child class, we need an additional electrode_atoms_real list for the 'real' atoms ...
        self.electrode_atoms_real=[]
@@ -481,6 +538,7 @@ class Nanotube_Virtual(Conductor_Virtual):
        boxVecs = MMsys.simmd.topology.getPeriodicBoxVectors()
        self.length = boxVecs[0][0] / nanometer
 
+
        # compute radial vector at each atom, get radius.  Make sure radius is approximately the same for all atoms
        radius_threshold=0.001
        self.radius= -1.0
@@ -496,6 +554,7 @@ class Nanotube_Virtual(Conductor_Virtual):
                self.radius = radius
            else:
                if abs( self.radius - radius ) > radius_threshold :
+                   print( atom.atom_index , radius , self.radius )
                    print( 'different radius for atoms in nanotube, something is wrong!')
                    sys.exit()
            # store radial vector for atom
@@ -504,26 +563,16 @@ class Nanotube_Virtual(Conductor_Virtual):
        # compute area per atom
        self.area_atom = 2.0 * numpy.pi * self.radius * self.length / self.Natoms
 
-       # Find Cathode/Anode contact atom.  This is used to Enforce Constant Potential between electrode and this conductor.
-       # Assume that MMsys.Cathode and MMsys.Anode objects have been created (which are of Electrode_Virtual type...)
-       if self.electrode_type == "cathode":
-           Electrode_contact = MMsys.Cathode
-       else:
-           Electrode_contact = MMsys.Anode
+       # find close neighbor conductor/atom distance ...
+       dr_vector = self.find_contact_neighbor_conductor( positions , self.r_center , MMsys )
        
-       self.Electrode_contact_atom_index=-1 # atom_index for Electrode contact atom
-       min_dist_sq = 10.0 # something large...
-       # find contact atom based on closest x/y projection of r_center.  
-       # Assume we don't need PBC !!
-       for atom in Electrode_contact.electrode_atoms:
-           xy_project_sq = ( self.r_center[0] - positions[atom.atom_index][0]._value )**2 + ( self.r_center[1] - positions[atom.atom_index][1]._value )**2 
-           if xy_project_sq < min_dist_sq:
-               self.Electrode_contact_atom_index = atom.atom_index
-               min_dist_sq = xy_project_sq
+       # if not returned as 'False', then need to do projection...
+       if dr_vector :
+           # 'find_contact_neighbor_conductor' sets self.dr_center_contact to distance between r_center and closest atom of conductor.  We need to project out component along nanotube axis to get radial component of this distance...
+           radial_vector =  self.project_orthogonal_to_axis( numpy.asarray(dr_vector) )
+           self.dr_center_contact = numpy.sqrt( radial_vector[0]**2 + radial_vector[1]**2 + radial_vector[2]**2 )
 
-       # now compute distance between center of nanotube and contact atom...
-       index = self.Electrode_contact_atom_index
-       self.dr_center_contact = sqrt( ( self.r_center[0] - positions[index][0]._value )**2 + ( self.r_center[1] - positions[index][1]._value )**2 + ( self.r_center[2] - positions[index][2]._value )**2 )
+       print( "Conductor " , self.close_conductor_Electrode  , self.Electrode_contact_atom.atom_index , self.dr_center_contact )
 
 
     # this method takes as input a vector, and projects out the component that is orthogonal to the nanotube axis

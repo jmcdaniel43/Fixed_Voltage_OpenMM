@@ -2,8 +2,12 @@
    This is software for running general Fixed-Voltage MD and Monte Carlo in OpenMM.  The code has been generalized to work for flat electrodes with additional conductor objects attached to the electrode,
    for example, carbon nanotubes and Buckyballs.
 
-   This code contains defines an 'MM' class which contains all of the data structures and methods needed for MD/MC and the Poisson solver.
+   This code contains an 'MM' class which contains all of the data structures and methods needed for MD/MC and the Poisson solver.
    This is intended to be combined with separate 'QM' class based on Psi4 to run Fixed-Voltage QM/MM simulations
+
+   Note that in example run scripts, libraries are loaded with syntax such as ...
+                           sys.path.append('../lib/')
+   which may need to be edited if directories are shuffled around ...
 
    Currently, we have two examples:
 

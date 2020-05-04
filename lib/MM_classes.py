@@ -398,20 +398,37 @@ class MM(object):
         #******************************************************************************
 
         # index of close contact atom ...
-        cathode_atom_index = Conductor.Electrode_contact_atom_index 
-        (q_i_quantity, sig, eps) = self.nbondedForce.getParticleParameters(cathode_atom_index)        
+        conductor_atom = Conductor.Electrode_contact_atom
+        conductor_atom_index = conductor_atom.atom_index 
+        (q_i_quantity, sig, eps) = self.nbondedForce.getParticleParameters(conductor_atom_index)        
         q_i = q_i_quantity._value # quantity = value * units ...
 
-        # Ez , don't divide by zero!
-        Ez_external = ( forces[cathode_atom_index][2]._value / q_i ) if abs(q_i) > (0.9*self.small_threshold) else 0.
+        # get field normal to surface, most likely this will be in Z-direction, but use general code....
+        E_external=[]
+        # normal component of Field...
+        if abs(q_i) > (0.9*self.small_threshold):
+            E_external.append( forces[conductor_atom_index][0]._value / q_i ) # Ex
+            E_external.append( forces[conductor_atom_index][1]._value / q_i ) # Ey
+            E_external.append( forces[conductor_atom_index][2]._value / q_i ) # Ez
 
-        # Electrostatics must satisfy on L/R of electrode atom:
-        # Left:  -dV/L = - sigma/2eps + Eext + dE_conductor
-        # Right:    0  =   sigma/2eps + Eext + dE_conductor
-        # therefore, sigma/eps = dV/L
-        # and dE_conductor = -( Eext + dV/2L )
+            # project out normal
+            En_external = numpy.dot( numpy.array( E_external ) , numpy.array( [ conductor_atom.nx , conductor_atom.ny , conductor_atom.nz ] ) )
+        else:
+            En_external = 0.0
 
-        dE_conductor = - ( Ez_external + self.Cathode.Voltage / self.Lgap / 2.0 ) * conversion_KjmolNm_Au
+
+        # the boundary condition depends on whether the contact is with the Electrode with applied Voltage, or another conductor...
+        if Conductor.close_conductor_Electrode :
+            # Electrostatics must satisfy on L/R of electrode atom:
+            # Left:  -dV/L = - sigma/2eps + Eext + dE_conductor
+            # Right:    0  =   sigma/2eps + Eext + dE_conductor
+            # therefore, sigma/eps = dV/L
+            # and dE_conductor = -( Eext + dV/2L )
+            dE_conductor = - ( En_external + self.Cathode.Voltage / self.Lgap / 2.0 ) * conversion_KjmolNm_Au
+        else :
+            # this is another conductor, no explicit delta_V / L ...
+            # there can be no surface charge at this element, because E=0 inside and outside the surface for both boundary conditions
+            dE_conductor = - En_external * conversion_KjmolNm_Au
 
 
         # Charge depends on geometry of conductor, in general, Q = E * A / 4 *pi where A is area of volume in Gauss' Law integration ...
@@ -495,7 +512,7 @@ class MM(object):
         else:
             # no extra conductors, scale each electrode to individual Analytic normalization....
             self.Cathode.Scale_charges_analytic( self , print_flag )
-            self.Anode.Scale_charges_analytic( self , pring_flag )
+            self.Anode.Scale_charges_analytic( self , print_flag )
 
 
 
@@ -776,13 +793,11 @@ class MM(object):
         #for atom in self.Anode.electrode_atoms:
         #    chargeFile.write("{:f} ".format(atom.charge))
 
-        chargeFile.write("\n nanotube \n")
         # loop over additional Conductors (buckyballs/nanotubes) if we have them
         for Conductor in self.Conductor_list:
             for atom in Conductor.electrode_atoms:
                 chargeFile.write("{:f} ".format(atom.charge))
 
-        chargeFile.write("\n nanotube \n")
         for atom in self.Anode.electrode_atoms:
             chargeFile.write("{:f} ".format(atom.charge))
 

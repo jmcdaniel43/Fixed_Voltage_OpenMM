@@ -1,6 +1,6 @@
 from __future__ import print_function
 import sys
-sys.path.append('./lib/')
+sys.path.append('../../lib/')
 #********** OpenMM Drivers
 from simtk.openmm.app import *
 from simtk.openmm import *
@@ -39,7 +39,7 @@ chargeFile = open("charges.dat", "w")
 simulation_type = "Constant_V"  # either "Constant_V" or "MC_equil"
 #**********************************************************************
 
-ffdir='/home/mcdanielgroup/data/Jesse/FV_graphite_nanotubes/electrode_ffdir/'
+ffdir='/home/mcdanielgroup/data/Jesse/Fixed_Voltage_OpenMM/Example_Electrodes_nanotube_BMIM_BF4_ACNT_FV/electrode_ffdir/'
 
 #************************** download SAPT-FF force field files from github
 url1 = "https://raw.github.com/jmcdaniel43/SAPT_force_field_OpenMM/master/sapt.xml"
@@ -49,6 +49,7 @@ filename2, headers = urllib.request.urlretrieve(url2, "sapt_residues.xml")
 
 # add extra CustomNonbonded force parameters to .xml file
 add_CustomNonbondedForce_SAPTFF_parameters( xml_base = "sapt.xml" , xml_param =  ffdir + "graph_customnonbonded.xml" , xml_combine = "sapt_add.xml" )
+
 
 # *********************************************************************
 #                     Create MM system object
@@ -60,20 +61,18 @@ Voltage = 4.0 # in Volts, units will be internally converted later...
 # electrode names used to exclude intra-electrode non-bonded interactions ...
 #cathode_name="cath"; anode_name = "anod"
 # use chain indices instead of residue names to identify electrode...
-cathode_index=(0,3); anode_index=(2,5) # note chain indices start at 0 ...
-#cathode_index=0; anode_index=2 # note chain indices start at 0 ...  # Change for Buckyballs!!
-# list of BuckyBalls ..
-#BuckyBalls = [ 1 ]
+#cathode_index=(0,2); anode_index=(1,3) # note chain indices start at 0 ...
+cathode_index=(0,5); anode_index=(4,9) # note chain indices start at 0 ...
 # list of Nanotubes ..
-NanoTubes = [(1,4)]
+NanoTubes = [(1,6),(2,7),(3,8)]
+
 # for now , must input nanotube axis.  Eventually, write code to automatically determine this...
-nanotube_axis=[(1.0, 0.0, 0.0)]
+nanotube_axis=[(1.0, 0.0, 0.0), (1.0, 0.0, 0.0), (-0.5, np.sqrt(3)/2.0, 0.0) ]  # axis in cartesian coordinates, not box vectors ...
 
-# Initialize: Input list of pdb and xml files
 
-MMsys=MM( pdb_list = [ 'equilibrated_add_neutral_sheets.pdb', ] , residue_xml_list = [ 'sapt_residues.xml' , ffdir + 'graph_residue_c.xml', ffdir + 'nanotube9x9_residue_c.xml', ffdir + 'graph_residue_n.xml', ffdir + 'nanotube9x9_residue_n.xml' ] , ff_xml_list = [ 'sapt_add.xml', 'graph.xml', ffdir + 'graph_c_freeze.xml', ffdir + 'nanotube9x9_c_freeze.xml' , ffdir + 'graph_n_freeze.xml', ffdir + 'nanotube9x9_n_freeze.xml' ]  )
+# Initialize: Input list of pdb and xml files, and QMregion_list
 
-#MMsys=MM( pdb_list = [ 'electrode_noions.pdb', ] , residue_xml_list = [ 'sapt_residues.xml' , ffdir + 'graph_residue_c.xml', ffdir + 'nanotube9x9_residue_c.xml', ffdir + 'graph_residue_n.xml', ffdir + 'nanotube9x9_residue_n.xml' ] , ff_xml_list = [ 'sapt_add.xml', 'graph.xml', ffdir + 'graph_c_freeze.xml', ffdir + 'nanotube9x9_c_freeze.xml' , ffdir + 'graph_n_freeze.xml', ffdir + 'nanotube9x9_n_freeze.xml' ]  )
+MMsys=MM( pdb_list = [ 'equilibrated_add_neutral_sheets.pdb', ] , residue_xml_list = [ 'sapt_residues.xml' , ffdir + 'graph_residue_c.xml', ffdir + 'nanotube9x9_residue_c.xml', ffdir + 'graph_residue_n.xml', ffdir + 'nanotube9x9_residue_n.xml' ] , ff_xml_list = [ 'sapt_add.xml', ffdir + 'graph.xml', ffdir + 'graph_c_freeze.xml', ffdir + 'nanotube9x9_c_freeze.xml' , ffdir + 'graph_n_freeze.xml', ffdir + 'nanotube9x9_n_freeze.xml' ]  )
 
 
 # if periodic residue, call this
@@ -81,19 +80,16 @@ MMsys.set_periodic_residue(True)
 
 #***********  Initialze OpenMM API's, this method creates simulation object
 MMsys.set_platform('OpenCL')   # only 'Reference' platform is currently implemented!
-#MMsys.set_platform('CPU')
+
 
 # initialize Virtual Electrodes, these are electrode `sheets' that solve electrostatics for constant Voltage ...
 # can choose electrodes by residue name (this is default)
 # can also choose electrodes by chain name (set chain=True)
 # can input tuple exclude_element with elements to exclude from virtual electrode, such as dummy Hydrogen atoms ...
-#MMsys.initialize_electrodes( Voltage, cathode_identifier = cathode_name , anode_identifier = anode_name , chain=False , exclude_element=("H",) )  # use residue names as identifiers ...
-#MMsys.initialize_electrodes( Voltage, cathode_identifier = cathode_index , anode_identifier = anode_index , chain=True , exclude_element=("H",) , BuckyBalls=BuckyBalls )  # chain indices instead of residue names
 MMsys.initialize_electrodes( Voltage, cathode_identifier = cathode_index , anode_identifier = anode_index , chain=True , exclude_element=("H",) , NanoTubes=NanoTubes, nanotube_axis=nanotube_axis )  # chain indices instead of residue names
 
 # initialize atoms indices of electrolyte, we need this for analytic charge correction.  Currently we electrode residue > 100 atoms, electrolyte residue < 100 atoms ... this should be fine?
 MMsys.initialize_electrolyte(Natom_cutoff=100)  # make sure all electrode residues have greater than, and all electrolyte residues have less than this number of atoms...
-
 
 # IMPORTANT: generate exclusions for SAPT-FF.  If flag_SAPT_FF_exclusions = True , then will assume SAPT-FF force field and put in appropriate exclusions.
 # set flag_SAPT_FF_exclusions = False if not using SAPT-FF force field
@@ -141,7 +137,7 @@ for i in range( int(simulation_time_ns * 1000 / freq_traj_output_ps ) ):
     elif simulation_type == "Constant_V":
         for j in range( int(freq_traj_output_ps * 1000 / freq_charge_update_fs ) ):
             # Fixed Voltage Electrostatics ..
-            MMsys.Poisson_solver_fixed_voltage( Niterations=4 )
+            MMsys.Poisson_solver_fixed_voltage( Niterations=5 )
             MMsys.simmd.step( freq_charge_update_fs )
         if write_charges :
             # write charges...
@@ -153,8 +149,4 @@ for i in range( int(simulation_time_ns * 1000 / freq_traj_output_ps ) ):
 
 print('done!')
 sys.exit()
-
-
-
-
 
