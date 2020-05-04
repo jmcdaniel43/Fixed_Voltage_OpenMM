@@ -482,9 +482,6 @@ class Buckyball_Virtual(Conductor_Virtual):
 class Nanotube_Virtual(Conductor_Virtual):
     def __init__(self, electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element, axis ):
 
-       # this is threshold for determining whether nearest conductor is "close enough".
-       close_conductor_threshold = 1.0 # nanometers
-
        # constructor for Parent...
        super().__init__(electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element)
 
