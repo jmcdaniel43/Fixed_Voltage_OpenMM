@@ -144,7 +144,6 @@ class MM(object):
               if self.QMMM :
                   self.properties = {'ReferenceVextGrid': 'true'}
                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-                  print('done setting reference platform for QM/MM ...')
               else :
                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'CPU':
@@ -290,8 +289,7 @@ class MM(object):
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
         if self.QMMM :
             platform=self.simmd.context.getPlatform()
-            print( 'in Poisson solver testing ...' )
-            print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
+            #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
             platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
 
         #********* Analytic evaluation of total charge on electrodes based on electrolyte coordinates
