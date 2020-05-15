@@ -38,8 +38,8 @@ conversion_KjmolNm_Au = conversion_nmBohr / 2625.5  # bohr/nm * au/(kJ/mol)
 conversion_eV_Kjmol = 96.487
 
 
-#  Simple class to hold atom info.  It is named specifically for this code (atom_QMMM), so as not to be confused with intrinsic atom class of OpenMM ...
-class atom_QMMM(object):
+#  Simple class to hold atom info.  It is named specifically for this code (atom_MM), so as not to be confused with intrinsic atom class of OpenMM ...
+class atom_MM(object):
     def __init__(self, element, charge, atom_index ):
         self.element = element
         self.charge  = charge
@@ -103,7 +103,7 @@ class Conductor_Virtual(object):
         # fill this with any extra electrode residues/chains that need exclusions
         self.electrode_extra_exclusions=[]
 
-        # create a list and fill with atom_QMMM objects for every atom of electrode ...
+        # create a list and fill with atom_MM objects for every atom of electrode ...
         self.electrode_atoms=[]
         flag=0 # make sure we match electrodes
         # loop over residues, and find electrode       
@@ -118,8 +118,8 @@ class Conductor_Virtual(object):
                         if element.symbol not in exclude_element:
                             # get initial charge from force field
                             (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
-                            # create atom_QMMM object
-                            atom_object = atom_QMMM( element.symbol , q_i._value , atom.index )
+                            # create atom_MM object
+                            atom_object = atom_MM( element.symbol , q_i._value , atom.index )
                             # add atom_object to electrode_atoms list
                             self.electrode_atoms.append( atom_object )
 
@@ -145,8 +145,8 @@ class Conductor_Virtual(object):
                         if element.symbol not in exclude_element:
                             # get initial charge from force field
                             (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
-                            # create atom_QMMM object
-                            atom_object = atom_QMMM( element.symbol , q_i._value , atom.index )
+                            # create atom_MM object
+                            atom_object = atom_MM( element.symbol , q_i._value , atom.index )
                             # add atom_object to electrode_atoms list
                             self.electrode_atoms.append( atom_object )
 
@@ -415,8 +415,8 @@ class Buckyball_Virtual(Conductor_Virtual):
                    if element.symbol not in exclude_element:
                        # get initial charge from force field
                        (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
-                       # create atom_QMMM object
-                       atom_object = atom_QMMM( element.symbol , q_i._value , atom.index )
+                       # create atom_MM object
+                       atom_object = atom_MM( element.symbol , q_i._value , atom.index )
                        # add atom_object to electrode_atoms list
                        self.electrode_atoms_real.append( atom_object )
 
@@ -508,8 +508,8 @@ class Nanotube_Virtual(Conductor_Virtual):
                    if element.symbol not in exclude_element:
                        # get initial charge from force field
                        (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
-                       # create atom_QMMM object
-                       atom_object = atom_QMMM( element.symbol , q_i._value , atom.index )
+                       # create atom_MM object
+                       atom_object = atom_MM( element.symbol , q_i._value , atom.index )
                        # add atom_object to electrode_atoms list
                        self.electrode_atoms_real.append( atom_object )
 

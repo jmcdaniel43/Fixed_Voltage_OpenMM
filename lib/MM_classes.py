@@ -25,17 +25,20 @@ import subprocess
 
 
 
-
-# This class controls the MM region of the simulation
+#*************************************************
+# This MM class is meant to be very general/versatile for a range of simulation types.
+# Currently, the three custom types of simulations it allows are:
+#  1) QM/MM turned on by inputing "QMregion_list"  -- must use compiled version of customized OpenMM code
+#  2) Fixed-Voltage MD for Supercapacitors with a variety of electrode types
+#  3) Monte Carlo equilibration of liquid/solid interfaces (e.g. electrode/electrolyte)
+#
+#**************************************************
 class MM(object):
-    # input to init is 3 lists , list of pdb files, list of residue xml files, list of force field xml files , list of atoms in QMregion 
-    def __init__(self, pdb_list , residue_xml_list , ff_xml_list   ):
+    # input to init is 3 lists , list of pdb files, list of residue xml files, list of force field xml files .
+    # **kwargs input is used to override default settings ...
+    def __init__(self, pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
           #*************************************
-          #  HARDCODED RUN PARAMETERS ???
-          #  bad programming practice?
-          #
-          #  it is so rare that we would run a simulation at a temperature other than 300 K, that i don't mind doing this.
-          #  also, why would we ever choose anything other than friction = 1 / ps , timestep = 1 fs , cutoff = 14 Angstroms?
+          #  DEFAULT RUN PARAMETERS, to overide defaults input  as **kwargs ...
           #**************************************
           self.temperature = 300*kelvin
           self.temperature_drude = 1*kelvin
@@ -44,6 +47,18 @@ class MM(object):
           self.timestep = 0.001*picoseconds
           self.small_threshold = 1e-6  # threshold for charge magnitude
           self.cutoff = 1.4*nanometer  
+          self.QMMM = False
+
+          # override default settings if input to **kwargs
+          if 'temperature' in kwargs :
+              self.temperature = kwargs['temperature']
+          if 'cutoff' in kwargs :
+              self.cutoff = kwargs['cutoff']              
+
+          # Check if we are doing QM/MM simulation ...
+          if 'QMregion_list' in kwargs :
+              self.QMMM = True
+              self.QMregion_list = kwargs['QMregion_list'] 
 
            
           # load bond definitions before creating pdb object (which calls createStandardBonds() internally upon __init__).  Note that loadBondDefinitions is a static method
@@ -60,6 +75,11 @@ class MM(object):
           self.forcefield = ForceField(*ff_xml_list)
           # add extra particles
           self.modeller.addExtraParticles(self.forcefield)
+
+          # If QM/MM, add QMregion to topology for exclusion in vext calculation...
+          if self.QMMM :
+              self.modeller.topology.addQMatoms( self.QMregion_list )
+
 
           # polarizable simulation?  Figure this out by seeing if we've added any Drude particles ...
           self.polarization = True
@@ -117,31 +137,45 @@ class MM(object):
 
 
     # this sets the platform for OpenMM simulation and initializes simulation object
-    #*********** Currently can only use 'Reference' for generating vext_grid !
+    #*********** Currently can only use 'Reference' for QM/MM ...
     def set_platform( self, platformname ):
           if platformname == 'Reference':
-               #self.properties = {'ReferenceVextGrid': 'true'}
-               self.platform = Platform.getPlatformByName('Reference')
-               #self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-               self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+              self.platform = Platform.getPlatformByName('Reference')
+              if self.QMMM :
+                  self.properties = {'ReferenceVextGrid': 'true'}
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+                  print('done setting reference platform for QM/MM ...')
+              else :
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'CPU':
-          #     self.properties = {'ReferenceVextGrid': 'true'}
-               self.platform = Platform.getPlatformByName('CPU')
-          #     self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-               self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+              self.platform = Platform.getPlatformByName('CPU')
+              if self.QMMM :
+                  print( 'Can only run QM/MM simulation with reference platform !')
+                  sys.exit()
+              else :
+                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'OpenCL':
-               self.platform = Platform.getPlatformByName('OpenCL')
-               # we found weird bug with 'mixed' precision on OpenCL related to updating parameters in context for gold/water simulation...
-               #self.properties = {'OpenCLPrecision': 'mixed'} 
-               self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+              self.platform = Platform.getPlatformByName('OpenCL')
+              if self.QMMM :
+                  print( 'Can only run QM/MM simulation with reference platform !')
+                  sys.exit()
+              else :
+                  # we found weird bug with 'mixed' precision on OpenCL related to updating parameters in context for gold/water simulation...
+                  #self.properties = {'OpenCLPrecision': 'mixed'} 
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'CUDA':
-               self.platform = Platform.getPlatformByName('CUDA')
-               self.properties = {'Precision': 'mixed'}
-               self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+              self.platform = Platform.getPlatformByName('CUDA')
+              self.properties = {'Precision': 'mixed'}
+              if self.QMMM :
+                  print( 'Can only run QM/MM simulation with reference platform !')
+                  sys.exit()
+              else :
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
           else:
-               print(' Could not recognize platform selection ... ')
-               sys.exit(0)
+              print(' Could not recognize platform selection ... ')
+              sys.exit(0)
           self.simmd.context.setPositions(self.modeller.positions)
+
 
 
     #***********************************************
@@ -254,9 +288,11 @@ class MM(object):
     def Poisson_solver_fixed_voltage(self, Niterations=3):
       
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
-        platform=self.simmd.context.getPlatform()
-        #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
-        #platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
+        if self.QMMM :
+            platform=self.simmd.context.getPlatform()
+            print( 'in Poisson solver testing ...' )
+            print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
+            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
 
         #********* Analytic evaluation of total charge on electrodes based on electrolyte coordinates
         state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
@@ -333,9 +369,10 @@ class MM(object):
         # this call is just for printing converged charges ...
         self.Scale_charges_analytic_general( print_flag = True )
 
-        # turn vext back on ...
-        #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
-        #platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "true" )
+        # if QM/MM , turn vext back on ...
+        if self.QMMM :
+            #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
+            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "true" )
 
 
 
@@ -805,6 +842,62 @@ class MM(object):
         # write newline to charge file after charge write
         chargeFile.write("\n")
         chargeFile.flush() # flush buffer
+
+
+
+    #***************************
+    # Getters that are needed if running QM/MM ...
+    #***************************
+
+
+    #**************************
+    # input atom_lists is list of lists of atoms
+    # returns a list of lists of elements, charges with one-to-one correspondence...
+    #**************************
+    def get_element_charge_for_atom_lists( self, atom_lists ):
+
+        element_lists=[]
+        charge_lists=[]
+        # loop over lists in atom_lists , and add list to element_lists , charge_lists
+        for atom_list in atom_lists:
+            element_list=[]
+            charge_list=[]
+            # loop over atoms in topology and match atoms from list...
+            for atom in self.simmd.topology.atoms():
+                # if in atom_list ..
+                if atom.index in atom_list:
+                    element = atom.element
+                    # get atomic charge from force field...
+                    (q_i, sig, eps) = self.nbondedForce.getParticleParameters(atom.index)
+                    # add to lists
+                    element_list.append( element.symbol )
+                    charge_list.append( q_i._value )
+
+            # now add to element_lists , charge_lists ..
+            element_lists.append( element_list )
+            charge_lists.append( charge_list )
+
+        return element_lists , charge_lists
+
+  
+    #**************************
+    # input atom_lists is list of lists of atoms
+    # returns a list of lists of positions with one-to-one correspondence...
+    #**************************
+    def get_positions_for_atom_lists( self , atom_lists ):
+
+        state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
+        positions = state.getPositions()
+        position_lists=[]
+        # loop over lists in atom_lists , and add list to position_lists
+        for atom_list in atom_lists:
+            position_list=[]
+            for index in atom_list:
+                position_list.append( [ positions[index][0]._value , positions[index][1]._value , positions[index][2]._value ] )
+            # now add to position_lists ...
+            position_lists.append( position_list )
+
+        return position_lists
 
 
 
