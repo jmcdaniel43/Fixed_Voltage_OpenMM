@@ -11,7 +11,6 @@ import random
 import numpy
 import subprocess
 
-
 #*************************** README  **************************************
 #  This module defines classes that are used in a QM/MM simulation
 #  Interfacing Psi4  and OpenMM
@@ -929,7 +928,7 @@ class MM(object):
                if res_atom_ind[-1] in self.QMatoms_list:
                      QM_ind = res_atom_ind[-1]
           # getting current box size for minimum mirror image calculation
-          state = self.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=True,getPositions=True,getParameters=True)
+          state = self.simmd.context.getState( getEnergy=False , getForces=False , getVelocities=True , getPositions=True , getParameters=True )
           pos = state.getPositions()
           box_vectors = [state.getPeriodicBoxVectors()[j]._value for j in range(3)]
           QM_pos = pos[QM_ind]._value
@@ -943,9 +942,9 @@ class MM(object):
                      ind = res_atom_ind.index(i)
                      if i in self.QMatoms_list:
                          QM_atoms = [atom.index for atom in res_list[ind]._atoms]
-                         QM_elements = [len(dir(atom.element)) for atom in res_list[ind]._atoms]
+                         QM_elements = [atom.element for atom in res_list[ind]._atoms]
                          for j in range(len(QM_atoms)):
-                             if QM_elements[j] == 40:
+                             if hasattr(QM_elements[j],'symbol'):
                                  QMregion_list.append(QM_atoms[j])
                              else:
                                  QMdrudes_list.append(QM_atoms[j])
