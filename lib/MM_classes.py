@@ -11,7 +11,6 @@ import random
 import numpy
 import subprocess
 
-
 #*************************** README  **************************************
 #  This module defines classes that are used in a QM/MM simulation
 #  Interfacing Psi4  and OpenMM
@@ -47,20 +46,22 @@ class MM(object):
           self.timestep = 0.001*picoseconds
           self.small_threshold = 1e-6  # threshold for charge magnitude
           self.cutoff = 1.4*nanometer  
-          self.QMMM = False
+          self.qmmm_ewald = False
 
           # override default settings if input to **kwargs
           if 'temperature' in kwargs :
               self.temperature = kwargs['temperature']
           if 'cutoff' in kwargs :
               self.cutoff = kwargs['cutoff']              
+          if 'qmmm_cutoff' in kwargs :
+              self.qmmm_cutoff = kwargs['qmmm_cutoff']              
+          if 'QMatoms_list' in kwargs :
+              self.QMatoms_list = kwargs['QMatoms_list'] 
 
           # Check if we are doing QM/MM simulation ...
-          if 'QMregion_list' in kwargs :
-              self.QMMM = True
-              self.QMregion_list = kwargs['QMregion_list'] 
+          if 'qmmm_ewald' in kwargs :
+              self.qmmm_ewald = kwargs['qmmm_ewald']
 
-           
           # load bond definitions before creating pdb object (which calls createStandardBonds() internally upon __init__).  Note that loadBondDefinitions is a static method
           # of Topology, so even though PDBFile creates its own topology object, these bond definitions will be applied...
           for residue_file in residue_xml_list:
@@ -77,8 +78,8 @@ class MM(object):
           self.modeller.addExtraParticles(self.forcefield)
 
           # If QM/MM, add QMregion to topology for exclusion in vext calculation...
-          if self.QMMM :
-              self.modeller.topology.addQMatoms( self.QMregion_list )
+          #if self.QMMM :
+          #    self.modeller.topology.addQMatoms( self.QMregion_list )
 
 
           # polarizable simulation?  Figure this out by seeing if we've added any Drude particles ...
@@ -100,19 +101,22 @@ class MM(object):
           self.system = self.forcefield.createSystem(self.modeller.topology, nonbondedCutoff=self.cutoff, constraints=HBonds, rigidWater=True)
           # get force types and set method
           self.nbondedForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == NonbondedForce][0]
+          
           self.customNonbondedForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == CustomNonbondedForce][0]
           if self.polarization :
               self.drudeForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == DrudeForce][0]
               # will only have this for certain molecules
               self.custombond = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == CustomBondForce][0]
 
-
           # set long-range interaction method
           self.nbondedForce.setNonbondedMethod(NonbondedForce.PME)
           self.customNonbondedForce.setNonbondedMethod(min(self.nbondedForce.getNonbondedMethod(),NonbondedForce.CutoffPeriodic))
 
+    def set_QMregion_parameters( self , QMatoms_list , qmmm_cutoff ):
+          self.qmmm_cutoff = qmmm_cutoff
+          self.QMatoms_list = QMatoms_list
 
-    def set_trajectory_output( self, filename , write_frequency ):
+    def set_trajectory_output( self , filename , write_frequency ):
           self.simmd.reporters = []
           self.simmd.reporters.append(DCDReporter(filename, write_frequency))
 
@@ -132,7 +136,7 @@ class MM(object):
 
     # this sets the PME parameters in OpenMM.  The grid size is important for the accuracy of the external potential
     # in the DFT quadrature, since this is interpolated from the PME grid
-    def setPMEParameters( self , pme_alpha , pme_grid_a , pme_grid_b , pme_grid_c ):
+    def set_PMEParameters( self , pme_alpha , pme_grid_a , pme_grid_b , pme_grid_c ):
         self.nbondedForce.setPMEParameters( pme_alpha , pme_grid_a , pme_grid_b , pme_grid_c )
 
 
@@ -141,21 +145,21 @@ class MM(object):
     def set_platform( self, platformname ):
           if platformname == 'Reference':
               self.platform = Platform.getPlatformByName('Reference')
-              if self.QMMM :
+              if self.qmmm_ewald :
                   self.properties = {'ReferenceVextGrid': 'true'}
                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
               else :
                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'CPU':
               self.platform = Platform.getPlatformByName('CPU')
-              if self.QMMM :
+              if self.qmmm_ewald :
                   print( 'Can only run QM/MM simulation with reference platform !')
                   sys.exit()
               else :
                    self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'OpenCL':
               self.platform = Platform.getPlatformByName('OpenCL')
-              if self.QMMM :
+              if self.qmmm_ewald :
                   print( 'Can only run QM/MM simulation with reference platform !')
                   sys.exit()
               else :
@@ -165,7 +169,7 @@ class MM(object):
           elif platformname == 'CUDA':
               self.platform = Platform.getPlatformByName('CUDA')
               self.properties = {'Precision': 'mixed'}
-              if self.QMMM :
+              if self.qmmm_ewald :
                   print( 'Can only run QM/MM simulation with reference platform !')
                   sys.exit()
               else :
@@ -287,7 +291,7 @@ class MM(object):
     def Poisson_solver_fixed_voltage(self, Niterations=3):
       
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
-        if self.QMMM :
+        if self.qmmm_ewald :
             platform=self.simmd.context.getPlatform()
             #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
             platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
@@ -368,7 +372,7 @@ class MM(object):
         self.Scale_charges_analytic_general( print_flag = True )
 
         # if QM/MM , turn vext back on ...
-        if self.QMMM :
+        if self.qmmm_ewald :
             #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
             platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "true" )
 
@@ -868,7 +872,10 @@ class MM(object):
                     # get atomic charge from force field...
                     (q_i, sig, eps) = self.nbondedForce.getParticleParameters(atom.index)
                     # add to lists
-                    element_list.append( element.symbol )
+                    if len(dir(element)) == 40:
+                         element_list.append( element.symbol )
+                    else:
+                         element_list.append( atom.name )
                     charge_list.append( q_i._value )
 
             # now add to element_lists , charge_lists ..
@@ -886,19 +893,90 @@ class MM(object):
 
         state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
         positions = state.getPositions()
+        QM_pos = positions[self.QMatoms_list[0]]._value
+        box_vectors = [state.getPeriodicBoxVectors()[i]._value for i in range(3)]
         position_lists=[]
+        real_position_lists=[]
         # loop over lists in atom_lists , and add list to position_lists
         for atom_list in atom_lists:
             position_list=[]
+            real_position_list=[]
             for index in atom_list:
-                position_list.append( [ positions[index][0]._value , positions[index][1]._value , positions[index][2]._value ] )
+                ind_pos = positions[index]._value
+                real_position_list.append( ind_pos )
+                r = get_least_mirror_pos( ind_pos , QM_pos , box_vectors)
+                position_list.append( [r[i]+QM_pos[i] for i in range(3)] )
             # now add to position_lists ...
             position_lists.append( position_list )
+            real_position_lists.append( real_position_list )
 
-        return position_lists
+        return position_lists , real_position_lists
 
+    #**************************
+    # this method gets the list of atoms that are in the QM region, including the specified QM system atoms
+    # input is a tuple of atom indices for the QM system and a cutoff distance in nanometers
+    #**************************
+    def get_QMregion_list(self):
+          # converting Angstrom cutoff to nm
+          cutoff = self.qmmm_cutoff/10.0
+          # getting the atom index for the first atom listed for each residue
+          res_atom_ind = []
+          res_list = [res for res in self.simmd.topology.residues()]
+          for res in res_list:
+               res_atom_ind.append(res._atoms[0].index)
+               # recording the atom index for the first atom in the QM system (assuming the QM system is one molecule)
+               if res_atom_ind[-1] in self.QMatoms_list:
+                     QM_ind = res_atom_ind[-1]
+          # getting current box size for minimum mirror image calculation
+          state = self.simmd.context.getState( getEnergy=False , getForces=False , getVelocities=True , getPositions=True , getParameters=True )
+          pos = state.getPositions()
+          box_vectors = [state.getPeriodicBoxVectors()[j]._value for j in range(3)]
+          QM_pos = pos[QM_ind]._value
+          # populating QMregion2_list and QMregion_pos and QMregion_elements
+          QMregion_list = []
+          QMdrudes_list = []
+          for i in range(len(pos)):
+               r = get_least_mirror_pos(QM_pos,pos[i]._value,box_vectors)
+               dist = sum([r[i]**2 for i in range(3)])**(0.5)
+               if dist < cutoff and i in res_atom_ind:
+                     ind = res_atom_ind.index(i)
+                     if i in self.QMatoms_list:
+                         QM_atoms = [atom.index for atom in res_list[ind]._atoms]
+                         QM_elements = [atom.element for atom in res_list[ind]._atoms]
+                         for j in range(len(QM_atoms)):
+                             if hasattr(QM_elements[j],'symbol'):
+                                 QMregion_list.append(QM_atoms[j])
+                             else:
+                                 QMdrudes_list.append(QM_atoms[j])
+                     else:
+                          QMregion_list.extend([atom.index for atom in res_list[ind]._atoms])
+          self.QMregion_list = tuple( QMregion_list )
+          self.QMdrudes_list = tuple( QMdrudes_list )
 
+    #********************
+    # this method sets exclusions
+    #
+    #*******************
+    def set_QMregion_exclusion(self):
+          system = self.simmd.context.getSystem()
+          system.clearQMexclude()
+          for index in self.QMregion_list:
+               system.addQMexclude( index )
+          for index in self.QMdrudes_list:
+               system.addQMexclude( index )
 
+#****************************************************
+# this is a standalone helper method, outside of class
+# input is three list vectors
+#****************************************************
+def get_least_mirror_pos( i_vec, j_vec, box_vec ):
+    # getting index of QM atoms in the QMregion_list to avoid self interaction calculation
+    r = i_vec - j_vec
+    r -= box_vec[2]*math.floor(r[2]/box_vec[2][2]+0.5)
+    r -= box_vec[1]*math.floor(r[1]/box_vec[1][1]+0.5)
+    r -= box_vec[0]*math.floor(r[0]/box_vec[0][0]+0.5)
+
+    return r
 
 #****************************************************
 # this is a small class used for storing Monte Carlo parameters ...
