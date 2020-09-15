@@ -153,8 +153,8 @@ class MM(object):
           elif platformname == 'CPU':
               self.platform = Platform.getPlatformByName('CPU')
               if self.qmmm_ewald :
-                  print( 'Can only run QM/MM simulation with reference platform !')
-                  sys.exit()
+                  self.properties = {'ReferenceVextGrid': 'true'}
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
               else :
                    self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
           elif platformname == 'OpenCL':
@@ -924,15 +924,12 @@ class MM(object):
           res_list = [res for res in self.simmd.topology.residues()]
           for res in res_list:
                res_atom_ind.append(res._atoms[0].index)
-               # recording the atom index for the first atom in the QM system (assuming the QM system is one molecule)
-               if res_atom_ind[-1] in self.QMatoms_list:
-                     QM_ind = res_atom_ind[-1]
           # getting current box size for minimum mirror image calculation
           state = self.simmd.context.getState( getEnergy=False , getForces=False , getVelocities=True , getPositions=True , getParameters=True )
           pos = state.getPositions()
           box_vectors = [state.getPeriodicBoxVectors()[j]._value for j in range(3)]
-          QM_pos = pos[QM_ind]._value
-          # populating QMregion2_list and QMregion_pos and QMregion_elements
+          QM_pos = [sum( [pos[i]._value[j] for i in self.QMatoms_list] ) / len( self.QMatoms_list ) for j in range(3)]
+          # populating QMregion_list and QMdrudes_list
           QMregion_list = []
           QMdrudes_list = []
           for i in range(len(pos)):
