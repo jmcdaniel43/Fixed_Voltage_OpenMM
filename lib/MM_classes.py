@@ -10,6 +10,7 @@ from electrode_sapt_exclusions import *
 import random
 import numpy
 import subprocess
+import sys
 
 #*************************** README  **************************************
 #  This module defines classes that are used in a QM/MM simulation
@@ -35,7 +36,7 @@ import subprocess
 class MM(object):
     # input to init is 3 lists , list of pdb files, list of residue xml files, list of force field xml files .
     # **kwargs input is used to override default settings ...
-    def __init__(self, pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
+    def __init__( self , **kwargs  ):
           #*************************************
           #  DEFAULT RUN PARAMETERS, to overide defaults input  as **kwargs ...
           #**************************************
@@ -46,34 +47,74 @@ class MM(object):
           self.timestep = 0.001*picoseconds
           self.small_threshold = 1e-6  # threshold for charge magnitude
           self.cutoff = 1.4*nanometer  
-          self.qmmm_ewald = False
 
-          # override default settings if input to **kwargs
+          #storing inputs for later
+          self.inputs = kwargs
+
+          # reading inputs from **kwargs
           if 'temperature' in kwargs :
-              self.temperature = kwargs['temperature']
+              self.temperature = int(kwargs['temperature'])*kelvin
+          if 'temperature_drude' in kwargs :
+              self.temperature_drude = int(kwargs['temperature_drude'])*kelvin
+          if 'friction' in kwargs :
+              self.friction = int(kwargs['friction'])/picosecond
+          if 'friction_drude' in kwargs :
+              self.friction_drude = int(kwargs['friction_drude'])/picosecond
+          if 'timestep' in kwargs :
+              self.timestep = float(kwargs['timestep'])*picoseconds
+          if 'small_threshold' in kwargs :
+              self.small_threshold = float(kwargs['small_threshold'])
           if 'cutoff' in kwargs :
-              self.cutoff = kwargs['cutoff']              
-          if 'qmmm_cutoff' in kwargs :
-              self.qmmm_cutoff = kwargs['qmmm_cutoff']              
-          if 'QMatoms_list' in kwargs :
-              self.QMatoms_list = kwargs['QMatoms_list'] 
-
-          # Check if we are doing QM/MM simulation ...
+              self.cutoff = float(kwargs['cutoff'])*nanometer
+          if 'QMatoms_range' in kwargs :
+              ( QMatoms_low , QMatoms_high ) = kwargs['QMatoms_range'].split(',')
+              self.QMatoms_list = range( int( QMatoms_low.strip( ' (),' ) ) , int( QMatoms_high.strip( ' (),' ) ) )
           if 'qmmm_ewald' in kwargs :
-              self.qmmm_ewald = kwargs['qmmm_ewald']
+              self.qmmm_ewald = eval(kwargs['qmmm_ewald'])
+          if 'qmmm_cutoff' in kwargs :
+              self.qmmm_cutoff = float(kwargs['qmmm_cutoff'])
+          if 'pdb_dir' in kwargs :
+              self.pdb_list = [ kwargs['pdb_dir'], ]
+          if 'res_dir' in kwargs :
+              self.residue_xml_list = [ kwargs['res_dir'], ]
+          if 'ff_dir' in kwargs :
+              self.ff_xml_list = [ kwargs['ff_dir'], ]
+          if 'out_dir' in kwargs :
+              self.out_dir = kwargs['out_dir']
+          if 'platform' in kwargs :
+              self.platformname = kwargs['platform']
+          if 'set_periodic_residue' in kwargs :
+              self.periodic_residue = eval(kwargs['set_periodic_residue'])
+          if 'collect_charge_data' in kwargs :
+              self.collect_charge_data = eval(kwargs['collect_charge_data'])
+          if 'return_system_init_pdb' in kwargs :
+              self.return_system_init_pdb = eval(kwargs['return_system_init_pdb'])
+          if 'return_system_final_pdb' in kwargs :
+              self.return_system_final_pdb = eval(kwargs['return_system_final_pdb'])
+          if 'write_frequency' in kwargs :
+              self.write_frequency = int(kwargs['write_frequency'])
+          if 'simulation_length' in kwargs :
+              self.simulation_length = float(kwargs['simulation_length'])
+              self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency) 
+
+          if self.qmmm_ewald :
+              if 'pme_grid_size' in kwargs :
+                  self.pme_grid_size = int(kwargs['pme_grid_size'])
+              if 'pme_alpha' in kwargs :
+                  self.pme_alpha = float(kwargs['pme_alpha'])
 
           # load bond definitions before creating pdb object (which calls createStandardBonds() internally upon __init__).  Note that loadBondDefinitions is a static method
           # of Topology, so even though PDBFile creates its own topology object, these bond definitions will be applied...
-          for residue_file in residue_xml_list:
-               Topology().loadBondDefinitions(residue_file)
+          for residue_file in self.residue_xml_list:
+              Topology().loadBondDefinitions(residue_file)
 
           # now create pdb object, use first pdb file input
-          self.pdb = PDBFile( pdb_list[0] )
+          self.pdb = PDBFile( self.pdb_list[0] )
 
           # create modeller
           self.modeller = Modeller(self.pdb.topology, self.pdb.positions)
           # create force field
-          self.forcefield = ForceField(*ff_xml_list)
+          self.forcefield = ForceField( *self.ff_xml_list )
           # add extra particles
           self.modeller.addExtraParticles(self.forcefield)
 
@@ -112,6 +153,68 @@ class MM(object):
           self.nbondedForce.setNonbondedMethod(NonbondedForce.PME)
           self.customNonbondedForce.setNonbondedMethod(min(self.nbondedForce.getNonbondedMethod(),NonbondedForce.CutoffPeriodic))
 
+          flag = self.periodic_residue
+          for i in range(self.system.getNumForces()):
+              f = self.system.getForce(i)
+              f.setForceGroup(i)
+              # if using PBC
+              if flag:
+                     # Here we are adding periodic boundaries to intra-molecular interactions.  Note that DrudeForce does not have this attribute, and
+                     # so if we want to use thole screening for graphite sheets we might have to implement periodic boundaries for this force type
+                     if type(f) == HarmonicBondForce or type(f) == HarmonicAngleForce or type(f) == PeriodicTorsionForce or type(f) == RBTorsionForce:
+                           f.setUsesPeriodicBoundaryConditions(True)
+                           f.usesPeriodicBoundaryConditions()
+
+          # this sets the PME parameters in OpenMM.  The grid size is important for the accuracy of the external potential
+          # in the DFT quadrature, since this is interpolated from the PME grid
+          if self.qmmm_ewald:
+              self.nbondedForce.setPMEParameters( self.pme_alpha , self.pme_grid_size , self.pme_grid_size , self.pme_grid_size )
+
+          # this sets the platform for OpenMM simulation and initializes simulation object
+          #*********** Currently can only use 'Reference' for QM/MM ..
+          if self.platformname == 'Reference':
+              self.platform = Platform.getPlatformByName('Reference')
+              if self.qmmm_ewald :
+                  self.properties = {'ReferenceVextGrid': 'true'}
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+              else :
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+          elif self.platformname == 'CPU':
+              self.platform = Platform.getPlatformByName('CPU')
+              if self.qmmm_ewald :
+                  self.properties = {'ReferenceVextGrid': 'true'}
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+              else :
+                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+          elif self.platformname == 'OpenCL':
+              self.platform = Platform.getPlatformByName('OpenCL')
+              if self.qmmm_ewald :
+                  print( 'Can only run QM/MM simulation with reference platform !')
+                  sys.exit()
+              else :
+                  # we found weird bug with 'mixed' precision on OpenCL related to updating parameters in context for gold/water simulation...
+                  #self.properties = {'OpenCLPrecision': 'mixed'} 
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
+          elif self.platformname == 'CUDA':
+              self.platform = Platform.getPlatformByName('CUDA')
+              self.properties = {'Precision': 'mixed'}
+              if self.qmmm_ewald :
+                  print( 'Can only run QM/MM simulation with reference platform !')
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+              else :
+                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
+          else:
+              print(' Could not recognize platform selection ... ')
+              sys.exit(0)
+          self.simmd.context.setPositions(self.modeller.positions)
+
+    #**********************************
+    # Reinitializes the QM system object
+    # kwargs is a dictionary of arguments
+    #**********************************
+    def reset( self , **kwargs ):
+          self.__init__( **kwargs )
+
     def set_QMregion_parameters( self , QMatoms_list , qmmm_cutoff ):
           self.qmmm_cutoff = qmmm_cutoff
           self.QMatoms_list = QMatoms_list
@@ -122,7 +225,8 @@ class MM(object):
 
 
     # this sets the force groups to used PBC
-    def set_periodic_residue(self, flag):
+    def set_periodic_residue(self):
+          flag = self.periodic_residue
           for i in range(self.system.getNumForces()):
                f = self.system.getForce(i)
                f.setForceGroup(i)
@@ -136,50 +240,8 @@ class MM(object):
 
     # this sets the PME parameters in OpenMM.  The grid size is important for the accuracy of the external potential
     # in the DFT quadrature, since this is interpolated from the PME grid
-    def set_PMEParameters( self , pme_alpha , pme_grid_a , pme_grid_b , pme_grid_c ):
-        self.nbondedForce.setPMEParameters( pme_alpha , pme_grid_a , pme_grid_b , pme_grid_c )
-
-
-    # this sets the platform for OpenMM simulation and initializes simulation object
-    #*********** Currently can only use 'Reference' for QM/MM ...
-    def set_platform( self, platformname ):
-          if platformname == 'Reference':
-              self.platform = Platform.getPlatformByName('Reference')
-              if self.qmmm_ewald :
-                  self.properties = {'ReferenceVextGrid': 'true'}
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-              else :
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif platformname == 'CPU':
-              self.platform = Platform.getPlatformByName('CPU')
-              if self.qmmm_ewald :
-                  self.properties = {'ReferenceVextGrid': 'true'}
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-              else :
-                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif platformname == 'OpenCL':
-              self.platform = Platform.getPlatformByName('OpenCL')
-              if self.qmmm_ewald :
-                  print( 'Can only run QM/MM simulation with reference platform !')
-                  sys.exit()
-              else :
-                  # we found weird bug with 'mixed' precision on OpenCL related to updating parameters in context for gold/water simulation...
-                  #self.properties = {'OpenCLPrecision': 'mixed'} 
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif platformname == 'CUDA':
-              self.platform = Platform.getPlatformByName('CUDA')
-              self.properties = {'Precision': 'mixed'}
-              if self.qmmm_ewald :
-                  print( 'Can only run QM/MM simulation with reference platform !')
-                  sys.exit()
-              else :
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-          else:
-              print(' Could not recognize platform selection ... ')
-              sys.exit(0)
-          self.simmd.context.setPositions(self.modeller.positions)
-
-
+    def set_PMEParameters( self ):
+        self.nbondedForce.setPMEParameters( self.pme_alpha , self.pme_grid_size , self.pme_grid_size , self.pme_grid_size )
 
     #***********************************************
     # this initializes the Electrode objects for Constant-Voltage simulation
@@ -895,22 +957,22 @@ class MM(object):
         positions = state.getPositions()
         QM_pos = positions[self.QMatoms_list[0]]._value
         box_vectors = [state.getPeriodicBoxVectors()[i]._value for i in range(3)]
-        position_lists=[]
+        lm_position_lists=[]
         real_position_lists=[]
         # loop over lists in atom_lists , and add list to position_lists
         for atom_list in atom_lists:
-            position_list=[]
+            lm_position_list=[]
             real_position_list=[]
             for index in atom_list:
                 ind_pos = positions[index]._value
                 real_position_list.append( ind_pos )
                 r = get_least_mirror_pos( ind_pos , QM_pos , box_vectors)
-                position_list.append( [r[i]+QM_pos[i] for i in range(3)] )
+                lm_position_list.append( [r[i]+QM_pos[i] for i in range(3)] )
             # now add to position_lists ...
-            position_lists.append( position_list )
+            lm_position_lists.append( lm_position_list )
             real_position_lists.append( real_position_list )
 
-        return position_lists , real_position_lists
+        return lm_position_lists , real_position_lists
 
     #**************************
     # this method gets the list of atoms that are in the QM region, including the specified QM system atoms
@@ -950,17 +1012,35 @@ class MM(object):
           self.QMregion_list = tuple( QMregion_list )
           self.QMdrudes_list = tuple( QMdrudes_list )
 
+    #**************************
+    # this method gets the list of atoms that are in the QM region, including the specified QM system atoms
+    # input is a tuple of atom indices for the QM system and a cutoff distance in nanometers
+    #**************************
+    def set_QMregion_list( self , QMregion_list , QMdrudes_list ):
+          self.QMregion_list = QMregion_list
+          self.QMdrudes_list = QMdrudes_list
+
     #********************
     # this method sets exclusions
     #
     #*******************
-    def set_QMregion_exclusion(self):
+    def set_QMregion_exclusion( self ):
           system = self.simmd.context.getSystem()
           system.clearQMexclude()
           for index in self.QMregion_list:
                system.addQMexclude( index )
           for index in self.QMdrudes_list:
                system.addQMexclude( index )
+
+    #********************
+    # this method writes a pdb file
+    # using the current state
+    #*******************
+    def write_pdb( self , name ):
+          state = self.simmd.context.getState(getEnergy=True,getForces=True,getPositions=True,enforcePeriodicBox=True)
+          pos_list = state.getPositions()
+          self.simmd.topology.setPeriodicBoxVectors(state.getPeriodicBoxVectors())
+          PDBFile.writeFile( self.simmd.topology , pos_list , open( self.out_dir.split( '.' )[0] + '_' + name + '.pdb', 'w' ) )
 
 #****************************************************
 # this is a standalone helper method, outside of class
