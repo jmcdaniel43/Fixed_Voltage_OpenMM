@@ -4,244 +4,61 @@ from simtk.unit import *
 from sys import stdout
 #******* Fixed voltage routines
 from Fixed_Voltage_routines import *
-#******* exclusions routines
-from electrode_sapt_exclusions import *
-#***********
+#******* electrode exclusions routines
+from electrode_exclusions import *
+#******** contains parent class
+from MM_class_base import *
+#******** exclusions for force field 
+from MM_exclusions_base import *
+#******** if we are using QM/MM module
+try:
+    from MM_classes import *
+except ImportError:
+    QMMM_import = None
+#*****************
+
 import random
 import numpy
 import subprocess
 import sys
 
+
+
 #*************************** README  **************************************
-#  This module defines classes that are used in a QM/MM simulation
-#  Interfacing Psi4  and OpenMM
-#
-#  Because these codes use different units and datastructures, conversions
-#  between these are done within the QM/MM classes, so that input and output
-#  passed to/from the classes is given in units/datastructures of the
-#  particular libraries (Psi4, OpenMM) that it comes from/goes to. 
+# This is a child MM system class for Fixed-Voltage simulations
+# that inherits from parent MM_base class in MM_class_base.py
 #
 #**************************************************************************
+class MM_FixedVoltage(MM_base):
+    # required input: 1) list of pdb files, 2) list of residue xml files, 3) list of force field xml files.
+    def __init__( self , pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
+        self.qmmm_ewald = False
+
+        # constructor for Parent...
+        super().__init__( pdb_list , residue_xml_list , ff_xml_list , **kwargs )
+
+
+        # inputs from **kwargs
+        if 'out_dir' in kwargs :
+            self.out_dir = kwargs['out_dir']
+        if 'platform' in kwargs :
+            self.platformname = kwargs['platform']
+        if 'set_periodic_residue' in kwargs :
+            self.periodic_residue = eval(kwargs['set_periodic_residue'])
+        if 'collect_charge_data' in kwargs :
+            self.collect_charge_data = eval(kwargs['collect_charge_data'])
+        if 'return_system_init_pdb' in kwargs :
+            self.return_system_init_pdb = eval(kwargs['return_system_init_pdb'])
+        if 'return_system_final_pdb' in kwargs :
+            self.return_system_final_pdb = eval(kwargs['return_system_final_pdb'])
+        if 'write_frequency' in kwargs :
+            self.write_frequency = int(kwargs['write_frequency'])
+        if 'simulation_length' in kwargs :
+            self.simulation_length = float(kwargs['simulation_length'])
+            self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency) 
 
 
 
-#*************************************************
-# This MM class is meant to be very general/versatile for a range of simulation types.
-# Currently, the three custom types of simulations it allows are:
-#  1) QM/MM turned on by inputing "QMregion_list"  -- must use compiled version of customized OpenMM code
-#  2) Fixed-Voltage MD for Supercapacitors with a variety of electrode types
-#  3) Monte Carlo equilibration of liquid/solid interfaces (e.g. electrode/electrolyte)
-#
-#**************************************************
-class MM(object):
-    # input to init is 3 lists , list of pdb files, list of residue xml files, list of force field xml files .
-    # **kwargs input is used to override default settings ...
-    def __init__( self , **kwargs  ):
-          #*************************************
-          #  DEFAULT RUN PARAMETERS, to overide defaults input  as **kwargs ...
-          #**************************************
-          self.temperature = 300*kelvin
-          self.temperature_drude = 1*kelvin
-          self.friction = 1/picosecond
-          self.friction_drude = 1/picosecond
-          self.timestep = 0.001*picoseconds
-          self.small_threshold = 1e-6  # threshold for charge magnitude
-          self.cutoff = 1.4*nanometer  
-
-          #storing inputs for later
-          self.inputs = kwargs
-
-          # reading inputs from **kwargs
-          if 'temperature' in kwargs :
-              self.temperature = int(kwargs['temperature'])*kelvin
-          if 'temperature_drude' in kwargs :
-              self.temperature_drude = int(kwargs['temperature_drude'])*kelvin
-          if 'friction' in kwargs :
-              self.friction = int(kwargs['friction'])/picosecond
-          if 'friction_drude' in kwargs :
-              self.friction_drude = int(kwargs['friction_drude'])/picosecond
-          if 'timestep' in kwargs :
-              self.timestep = float(kwargs['timestep'])*picoseconds
-          if 'small_threshold' in kwargs :
-              self.small_threshold = float(kwargs['small_threshold'])
-          if 'cutoff' in kwargs :
-              self.cutoff = float(kwargs['cutoff'])*nanometer
-          if 'QMatoms_range' in kwargs :
-              ( QMatoms_low , QMatoms_high ) = kwargs['QMatoms_range'].split(',')
-              self.QMatoms_list = range( int( QMatoms_low.strip( ' (),' ) ) , int( QMatoms_high.strip( ' (),' ) ) )
-          if 'qmmm_ewald' in kwargs :
-              self.qmmm_ewald = eval(kwargs['qmmm_ewald'])
-          if 'qmmm_cutoff' in kwargs :
-              self.qmmm_cutoff = float(kwargs['qmmm_cutoff'])
-          if 'pdb_dir' in kwargs :
-              self.pdb_list = [ kwargs['pdb_dir'], ]
-          if 'res_dir' in kwargs :
-              self.residue_xml_list = [ kwargs['res_dir'], ]
-          if 'ff_dir' in kwargs :
-              self.ff_xml_list = [ kwargs['ff_dir'], ]
-          if 'out_dir' in kwargs :
-              self.out_dir = kwargs['out_dir']
-          if 'platform' in kwargs :
-              self.platformname = kwargs['platform']
-          if 'set_periodic_residue' in kwargs :
-              self.periodic_residue = eval(kwargs['set_periodic_residue'])
-          if 'collect_charge_data' in kwargs :
-              self.collect_charge_data = eval(kwargs['collect_charge_data'])
-          if 'return_system_init_pdb' in kwargs :
-              self.return_system_init_pdb = eval(kwargs['return_system_init_pdb'])
-          if 'return_system_final_pdb' in kwargs :
-              self.return_system_final_pdb = eval(kwargs['return_system_final_pdb'])
-          if 'write_frequency' in kwargs :
-              self.write_frequency = int(kwargs['write_frequency'])
-          if 'simulation_length' in kwargs :
-              self.simulation_length = float(kwargs['simulation_length'])
-              self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency) 
-
-          if self.qmmm_ewald :
-              if 'pme_grid_size' in kwargs :
-                  self.pme_grid_size = int(kwargs['pme_grid_size'])
-              if 'pme_alpha' in kwargs :
-                  self.pme_alpha = float(kwargs['pme_alpha'])
-
-          # load bond definitions before creating pdb object (which calls createStandardBonds() internally upon __init__).  Note that loadBondDefinitions is a static method
-          # of Topology, so even though PDBFile creates its own topology object, these bond definitions will be applied...
-          for residue_file in self.residue_xml_list:
-              Topology().loadBondDefinitions(residue_file)
-
-          # now create pdb object, use first pdb file input
-          self.pdb = PDBFile( self.pdb_list[0] )
-
-          # create modeller
-          self.modeller = Modeller(self.pdb.topology, self.pdb.positions)
-          # create force field
-          self.forcefield = ForceField( *self.ff_xml_list )
-          # add extra particles
-          self.modeller.addExtraParticles(self.forcefield)
-
-          # If QM/MM, add QMregion to topology for exclusion in vext calculation...
-          #if self.QMMM :
-          #    self.modeller.topology.addQMatoms( self.QMregion_list )
-
-
-          # polarizable simulation?  Figure this out by seeing if we've added any Drude particles ...
-          self.polarization = True
-          if self.pdb.topology.getNumAtoms() == self.modeller.topology.getNumAtoms():
-              self.polarization = False
-
-          if self.polarization :
-              #************** Polarizable simulation, use Drude integrator with standard settings
-              self.integrator = DrudeLangevinIntegrator(self.temperature, self.friction, self.temperature_drude, self.friction_drude, self.timestep)
-              # this should prevent polarization catastrophe during equilibration, but shouldn't affect results afterwards ( 0.2 Angstrom displacement is very large for equil. Drudes)
-              self.integrator.setMaxDrudeDistance(0.02)
-          else :
-              #************** Non-polarizable simulation
-              self.integrator = LangevinIntegrator(self.temperature, self.friction, self.timestep)
-
-
-          # create openMM system object
-          self.system = self.forcefield.createSystem(self.modeller.topology, nonbondedCutoff=self.cutoff, constraints=HBonds, rigidWater=True)
-          # get force types and set method
-          self.nbondedForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == NonbondedForce][0]
-          
-          self.customNonbondedForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == CustomNonbondedForce][0]
-          if self.polarization :
-              self.drudeForce = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == DrudeForce][0]
-              # will only have this for certain molecules
-              self.custombond = [f for f in [self.system.getForce(i) for i in range(self.system.getNumForces())] if type(f) == CustomBondForce][0]
-
-          # set long-range interaction method
-          self.nbondedForce.setNonbondedMethod(NonbondedForce.PME)
-          self.customNonbondedForce.setNonbondedMethod(min(self.nbondedForce.getNonbondedMethod(),NonbondedForce.CutoffPeriodic))
-
-          flag = self.periodic_residue
-          for i in range(self.system.getNumForces()):
-              f = self.system.getForce(i)
-              f.setForceGroup(i)
-              # if using PBC
-              if flag:
-                     # Here we are adding periodic boundaries to intra-molecular interactions.  Note that DrudeForce does not have this attribute, and
-                     # so if we want to use thole screening for graphite sheets we might have to implement periodic boundaries for this force type
-                     if type(f) == HarmonicBondForce or type(f) == HarmonicAngleForce or type(f) == PeriodicTorsionForce or type(f) == RBTorsionForce:
-                           f.setUsesPeriodicBoundaryConditions(True)
-                           f.usesPeriodicBoundaryConditions()
-
-          # this sets the PME parameters in OpenMM.  The grid size is important for the accuracy of the external potential
-          # in the DFT quadrature, since this is interpolated from the PME grid
-          if self.qmmm_ewald:
-              self.nbondedForce.setPMEParameters( self.pme_alpha , self.pme_grid_size , self.pme_grid_size , self.pme_grid_size )
-
-          # this sets the platform for OpenMM simulation and initializes simulation object
-          #*********** Currently can only use 'Reference' for QM/MM ..
-          if self.platformname == 'Reference':
-              self.platform = Platform.getPlatformByName('Reference')
-              if self.qmmm_ewald :
-                  self.properties = {'ReferenceVextGrid': 'true'}
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-              else :
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif self.platformname == 'CPU':
-              self.platform = Platform.getPlatformByName('CPU')
-              if self.qmmm_ewald :
-                  self.properties = {'ReferenceVextGrid': 'true'}
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-              else :
-                   self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif self.platformname == 'OpenCL':
-              self.platform = Platform.getPlatformByName('OpenCL')
-              if self.qmmm_ewald :
-                  print( 'Can only run QM/MM simulation with reference platform !')
-                  sys.exit()
-              else :
-                  # we found weird bug with 'mixed' precision on OpenCL related to updating parameters in context for gold/water simulation...
-                  #self.properties = {'OpenCLPrecision': 'mixed'} 
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform)
-          elif self.platformname == 'CUDA':
-              self.platform = Platform.getPlatformByName('CUDA')
-              self.properties = {'Precision': 'mixed'}
-              if self.qmmm_ewald :
-                  print( 'Can only run QM/MM simulation with reference platform !')
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-              else :
-                  self.simmd = Simulation(self.modeller.topology, self.system, self.integrator, self.platform, self.properties)
-          else:
-              print(' Could not recognize platform selection ... ')
-              sys.exit(0)
-          self.simmd.context.setPositions(self.modeller.positions)
-
-    #**********************************
-    # Reinitializes the QM system object
-    # kwargs is a dictionary of arguments
-    #**********************************
-    def reset( self , **kwargs ):
-          self.__init__( **kwargs )
-
-    def set_QMregion_parameters( self , QMatoms_list , qmmm_cutoff ):
-          self.qmmm_cutoff = qmmm_cutoff
-          self.QMatoms_list = QMatoms_list
-
-    def set_trajectory_output( self , filename , write_frequency ):
-          self.simmd.reporters = []
-          self.simmd.reporters.append(DCDReporter(filename, write_frequency))
-
-
-    # this sets the force groups to used PBC
-    def set_periodic_residue(self):
-          flag = self.periodic_residue
-          for i in range(self.system.getNumForces()):
-               f = self.system.getForce(i)
-               f.setForceGroup(i)
-               # if using PBC
-               if flag:
-                      # Here we are adding periodic boundaries to intra-molecular interactions.  Note that DrudeForce does not have this attribute, and
-                      # so if we want to use thole screening for graphite sheets we might have to implement periodic boundaries for this force type
-                      if type(f) == HarmonicBondForce or type(f) == HarmonicAngleForce or type(f) == PeriodicTorsionForce or type(f) == RBTorsionForce:
-                            f.setUsesPeriodicBoundaryConditions(True)
-                            f.usesPeriodicBoundaryConditions()
-
-    # this sets the PME parameters in OpenMM.  The grid size is important for the accuracy of the external potential
-    # in the DFT quadrature, since this is interpolated from the PME grid
-    def set_PMEParameters( self ):
-        self.nbondedForce.setPMEParameters( self.pme_alpha , self.pme_grid_size , self.pme_grid_size , self.pme_grid_size )
 
     #***********************************************
     # this initializes the Electrode objects for Constant-Voltage simulation
@@ -353,7 +170,9 @@ class MM(object):
     def Poisson_solver_fixed_voltage(self, Niterations=3):
       
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
+        print( 'qmmm_ewald' , self.qmmm_ewald )
         if self.qmmm_ewald :
+            print( 'here' )
             platform=self.simmd.context.getPlatform()
             #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
             platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
@@ -669,7 +488,7 @@ class MM(object):
 
         # if special exclusion for SAPT-FF force field ...
         if flag_SAPT_FF_exclusions:
-            SAPT_FF_exclusions( self )
+            generate_SAPT_FF_exclusions( self )
 
         # if using a hybrid water model, need to create interaction groups for customnonbonded force....
         if flag_hybrid_water_model:
@@ -909,151 +728,33 @@ class MM(object):
 
 
 
-    #***************************
-    # Getters that are needed if running QM/MM ...
-    #***************************
 
 
-    #**************************
-    # input atom_lists is list of lists of atoms
-    # returns a list of lists of elements, charges with one-to-one correspondence...
-    #**************************
-    def get_element_charge_for_atom_lists( self, atom_lists ):
+#************************************************************************
+# This child class combines child MM classes for Fixed-Voltage and QM/MM 
+# inheritance diagram is:
+#                     MM_base
+#                    -      -
+#                  -          -
+#               MM_QMMM     MM_FixedVoltage
+#                   _        _
+#                     _     _
+#               MM_FixedVoltage_QMMM
+#
+# note that using super().__init__() in all child classes ensures that
+# MM_base.__init__() isn't doubly called.
+#**************************************************************************
+class MM_FixedVoltage_QMMM(MM_QMMM, MM_FixedVoltage):
+    # required input: 1) list of pdb files, 2) list of residue xml files, 3) list of force field xml files.
+    def __init__( self , pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
 
-        element_lists=[]
-        charge_lists=[]
-        # loop over lists in atom_lists , and add list to element_lists , charge_lists
-        for atom_list in atom_lists:
-            element_list=[]
-            charge_list=[]
-            # loop over atoms in topology and match atoms from list...
-            for atom in self.simmd.topology.atoms():
-                # if in atom_list ..
-                if atom.index in atom_list:
-                    element = atom.element
-                    # get atomic charge from force field...
-                    (q_i, sig, eps) = self.nbondedForce.getParticleParameters(atom.index)
-                    # add to lists
-                    if len(dir(element)) == 40:
-                         element_list.append( element.symbol )
-                    else:
-                         element_list.append( atom.name )
-                    charge_list.append( q_i._value )
+        # constructor runs through MM_QMMM and MM_FixedVoltage ...
+        super().__init__( pdb_list , residue_xml_list , ff_xml_list , **kwargs )
 
-            # now add to element_lists , charge_lists ..
-            element_lists.append( element_list )
-            charge_lists.append( charge_list )
 
-        return element_lists , charge_lists
 
-  
-    #**************************
-    # input atom_lists is list of lists of atoms
-    # returns a list of lists of positions with one-to-one correspondence...
-    #**************************
-    def get_positions_for_atom_lists( self , atom_lists ):
 
-        state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
-        positions = state.getPositions()
-        QM_pos = positions[self.QMatoms_list[0]]._value
-        box_vectors = [state.getPeriodicBoxVectors()[i]._value for i in range(3)]
-        lm_position_lists=[]
-        real_position_lists=[]
-        # loop over lists in atom_lists , and add list to position_lists
-        for atom_list in atom_lists:
-            lm_position_list=[]
-            real_position_list=[]
-            for index in atom_list:
-                ind_pos = positions[index]._value
-                real_position_list.append( ind_pos )
-                r = get_least_mirror_pos( ind_pos , QM_pos , box_vectors)
-                lm_position_list.append( [r[i]+QM_pos[i] for i in range(3)] )
-            # now add to position_lists ...
-            lm_position_lists.append( lm_position_list )
-            real_position_lists.append( real_position_list )
 
-        return lm_position_lists , real_position_lists
-
-    #**************************
-    # this method gets the list of atoms that are in the QM region, including the specified QM system atoms
-    # input is a tuple of atom indices for the QM system and a cutoff distance in nanometers
-    #**************************
-    def get_QMregion_list(self):
-          # converting Angstrom cutoff to nm
-          cutoff = self.qmmm_cutoff/10.0
-          # getting the atom index for the first atom listed for each residue
-          res_atom_ind = []
-          res_list = [res for res in self.simmd.topology.residues()]
-          for res in res_list:
-               res_atom_ind.append(res._atoms[0].index)
-          # getting current box size for minimum mirror image calculation
-          state = self.simmd.context.getState( getEnergy=False , getForces=False , getVelocities=True , getPositions=True , getParameters=True )
-          pos = state.getPositions()
-          box_vectors = [state.getPeriodicBoxVectors()[j]._value for j in range(3)]
-          QM_pos = [sum( [pos[i]._value[j] for i in self.QMatoms_list] ) / len( self.QMatoms_list ) for j in range(3)]
-          # populating QMregion_list and QMdrudes_list
-          QMregion_list = []
-          QMdrudes_list = []
-          for i in range(len(pos)):
-               r = get_least_mirror_pos(QM_pos,pos[i]._value,box_vectors)
-               dist = sum([r[i]**2 for i in range(3)])**(0.5)
-               if dist < cutoff and i in res_atom_ind:
-                     ind = res_atom_ind.index(i)
-                     if i in self.QMatoms_list:
-                         QM_atoms = [atom.index for atom in res_list[ind]._atoms]
-                         QM_elements = [atom.element for atom in res_list[ind]._atoms]
-                         for j in range(len(QM_atoms)):
-                             if hasattr(QM_elements[j],'symbol'):
-                                 QMregion_list.append(QM_atoms[j])
-                             else:
-                                 QMdrudes_list.append(QM_atoms[j])
-                     else:
-                          QMregion_list.extend([atom.index for atom in res_list[ind]._atoms])
-          self.QMregion_list = tuple( QMregion_list )
-          self.QMdrudes_list = tuple( QMdrudes_list )
-
-    #**************************
-    # this method gets the list of atoms that are in the QM region, including the specified QM system atoms
-    # input is a tuple of atom indices for the QM system and a cutoff distance in nanometers
-    #**************************
-    def set_QMregion_list( self , QMregion_list , QMdrudes_list ):
-          self.QMregion_list = QMregion_list
-          self.QMdrudes_list = QMdrudes_list
-
-    #********************
-    # this method sets exclusions
-    #
-    #*******************
-    def set_QMregion_exclusion( self ):
-          system = self.simmd.context.getSystem()
-          system.clearQMexclude()
-          for index in self.QMregion_list:
-               system.addQMexclude( index )
-          for index in self.QMdrudes_list:
-               system.addQMexclude( index )
-
-    #********************
-    # this method writes a pdb file
-    # using the current state
-    #*******************
-    def write_pdb( self , name ):
-          state = self.simmd.context.getState(getEnergy=True,getForces=True,getPositions=True,enforcePeriodicBox=True)
-          pos_list = state.getPositions()
-          self.simmd.topology.setPeriodicBoxVectors(state.getPeriodicBoxVectors())
-          PDBFile.writeFile( self.simmd.topology , pos_list , open( self.out_dir.split( '.' )[0] + '_' + name + '.pdb', 'w' ) )
-
-#****************************************************
-# this is a standalone helper method, outside of class
-# input is three list vectors
-#****************************************************
-def get_least_mirror_pos( i_vec, j_vec, box_vec ):
-    # getting index of QM atoms in the QMregion_list to avoid self interaction calculation
-    r = i_vec - j_vec
-    r -= box_vec[2]*math.floor(r[2]/box_vec[2][2]+0.5)
-    r -= box_vec[1]*math.floor(r[1]/box_vec[1][1]+0.5)
-    r -= box_vec[0]*math.floor(r[0]/box_vec[0][0]+0.5)
-
-    return r
 
 #****************************************************
 # this is a small class used for storing Monte Carlo parameters ...

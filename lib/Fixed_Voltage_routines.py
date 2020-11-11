@@ -150,6 +150,7 @@ class Conductor_Virtual(object):
                             # add atom_object to electrode_atoms list
                             self.electrode_atoms.append( atom_object )
 
+
         # now make sure we've matched electrode residue name
         if flag == 0:
             print(' Couldnt find electrode residue...please check input electrode_identifier when constructing Electrode_Virtual object ! ')
@@ -182,6 +183,10 @@ class Conductor_Virtual(object):
            Electrode_contact = MMsys.Cathode
        else:
            Electrode_contact = MMsys.Anode
+
+       # if this is a simulation without a Cathode/Anode, return False ...
+       if Electrode_contact is None :
+           return False
 
        min_dist = 10.0 # something large...
        # find contact atom based on closest distance to r_center.  The reason we calculate distance based on r_center is that for a nanotube/flat sheet, there is no uniquely defined close-contact atom pair... 
@@ -247,6 +252,13 @@ class Conductor_Virtual(object):
 #        exclude_element     : this is tuple that can be filled with elements to exclude, e.g dummy Hydrogen
 #*********************************
 class Electrode_Virtual(Conductor_Virtual):
+
+    # if electrode_identifier is empty tuple, this signals that we don't have electrodes in our
+    # system, so don't create instance of class ...
+    def __new__(cls, electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element):
+        if electrode_identifier :
+            return super().__new__(cls)
+
     def __init__(self, electrode_identifier, electrode_type, Voltage, MMsys, chain_flag, exclude_element):
 
         # constructor for Parent...
@@ -355,6 +367,10 @@ class Electrode_Virtual(Conductor_Virtual):
         # total charge on electrode as computed numerically
         Q_numeric = self.get_total_charge()
 
+        # don't scale charges if total charge on Electrode is zero ...
+        if abs(Q_numeric) < 0.01 :
+            return
+
         if print_flag :
             print( "Q_numeric , Q_analytic charges on " , self.electrode_type , Q_numeric , self.Q_analytic )
 
@@ -458,14 +474,6 @@ class Buckyball_Virtual(Conductor_Virtual):
        # find close neighbor conductor/atom distance ...
        self.find_contact_neighbor_conductor( positions , self.r_center , MMsys )
       
-
-    # getter for returning the total charge on the electrode real atoms
-    def get_total_charge_real( self ):
-        sumQ = 0.0
-        for atom in self.electrode_atoms_real:
-            sumQ += atom.charge
-
-        return sumQ
 
 
 
@@ -578,12 +586,4 @@ class Nanotube_Virtual(Conductor_Virtual):
         vec_out = vec_in - axis_local * numpy.dot( vec_in , axis_local )
         return vec_out
 
-
-    # getter for returning the total charge on the electrode real atoms
-    def get_total_charge_real( self ):
-        sumQ = 0.0
-        for atom in self.electrode_atoms_real:
-            sumQ += atom.charge
-
-        return sumQ
 

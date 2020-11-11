@@ -5,7 +5,7 @@ sys.path.append('../lib/')
 from simtk.openmm.app import *
 from simtk.openmm import *
 from simtk.unit import *
-from MM_classes import *
+from MM_classes_FV import *
 #*********** Fixed Voltage routines
 from Fixed_Voltage_routines import *
 #***************************
@@ -50,7 +50,7 @@ Voltage = 4.0 # in Volts, units will be internally converted later...
 cathode_index=(2,1,0); anode_index=(3,4,5) # note chain indices start at 0 ...
 
 # Initialize: Input list of pdb and xml files
-MMsys=MM( pdb_list = [ 'system_init.pdb', ] , residue_xml_list = [ 'gold_residue.xml' , 'gold-water_residue.xml' ] , ff_xml_list = [ 'gold.xml', 'gold-water.xml' ]  )
+MMsys=MM_FixedVoltage( pdb_list = [ 'system_init.pdb', ] , residue_xml_list = [ 'gold_residue.xml' , 'gold-water_residue.xml' ] , ff_xml_list = [ 'gold.xml', 'gold-water.xml' ]  )
 
 # if periodic residue, call this
 MMsys.set_periodic_residue(True)

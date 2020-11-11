@@ -5,7 +5,7 @@ sys.path.append('../../lib/')
 from simtk.openmm.app import *
 from simtk.openmm import *
 from simtk.unit import *
-from MM_classes import *
+from MM_classes_FV import *
 #*********** Fixed Voltage routines
 from Fixed_Voltage_routines import *
 #***************************
@@ -72,7 +72,7 @@ nanotube_axis=[(1.0, 0.0, 0.0), (1.0, 0.0, 0.0), (-0.5, np.sqrt(3)/2.0, 0.0) ]  
 
 # Initialize: Input list of pdb and xml files, and QMregion_list
 
-MMsys=MM( pdb_list = [ 'equilibrated_add_neutral_sheets.pdb', ] , residue_xml_list = [ 'sapt_residues.xml' , ffdir + 'graph_residue_c.xml', ffdir + 'nanotube9x9_residue_c.xml', ffdir + 'graph_residue_n.xml', ffdir + 'nanotube9x9_residue_n.xml' ] , ff_xml_list = [ 'sapt_add.xml', ffdir + 'graph.xml', ffdir + 'graph_c_freeze.xml', ffdir + 'nanotube9x9_c_freeze.xml' , ffdir + 'graph_n_freeze.xml', ffdir + 'nanotube9x9_n_freeze.xml' ]  )
+MMsys=MM_FixedVoltage( pdb_list = [ 'equilibrated_add_neutral_sheets.pdb', ] , residue_xml_list = [ 'sapt_residues.xml' , ffdir + 'graph_residue_c.xml', ffdir + 'nanotube9x9_residue_c.xml', ffdir + 'graph_residue_n.xml', ffdir + 'nanotube9x9_residue_n.xml' ] , ff_xml_list = [ 'sapt_add.xml', ffdir + 'graph.xml', ffdir + 'graph_c_freeze.xml', ffdir + 'nanotube9x9_c_freeze.xml' , ffdir + 'graph_n_freeze.xml', ffdir + 'nanotube9x9_n_freeze.xml' ]  )
 
 
 # if periodic residue, call this
