@@ -7,14 +7,9 @@ from Fixed_Voltage_routines import *
 #******* electrode exclusions routines
 from electrode_exclusions import *
 #******** contains parent class
-from MM_class_base import *
+from shared.MM_class_base import *
 #******** exclusions for force field 
-from MM_exclusions_base import *
-#******** if we are using QM/MM module
-try:
-    from MM_classes import *
-except ImportError:
-    QMMM_import = None
+from shared.MM_exclusions_base import *
 #*****************
 
 import random
@@ -725,31 +720,6 @@ class MM_FixedVoltage(MM_base):
         # write newline to charge file after charge write
         chargeFile.write("\n")
         chargeFile.flush() # flush buffer
-
-
-
-
-
-#************************************************************************
-# This child class combines child MM classes for Fixed-Voltage and QM/MM 
-# inheritance diagram is:
-#                     MM_base
-#                    -      -
-#                  -          -
-#               MM_QMMM     MM_FixedVoltage
-#                   _        _
-#                     _     _
-#               MM_FixedVoltage_QMMM
-#
-# note that using super().__init__() in all child classes ensures that
-# MM_base.__init__() isn't doubly called.
-#**************************************************************************
-class MM_FixedVoltage_QMMM(MM_QMMM, MM_FixedVoltage):
-    # required input: 1) list of pdb files, 2) list of residue xml files, 3) list of force field xml files.
-    def __init__( self , pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
-
-        # constructor runs through MM_QMMM and MM_FixedVoltage ...
-        super().__init__( pdb_list , residue_xml_list , ff_xml_list , **kwargs )
 
 
 
