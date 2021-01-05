@@ -87,15 +87,19 @@ class MM_FixedVoltage(MM_base):
                     sys.exit()
 
 
-        state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True) 
-        positions = state.getPositions()
-        boxVecs = self.simmd.topology.getPeriodicBoxVectors()
-        # set electrochemical cell parameters...
-        self.set_electrochemical_cell_parameters( positions, boxVecs )
+        if self.Cathode is not None and self.Anode is not None :
+            state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True) 
+            positions = state.getPositions()
+            boxVecs = self.simmd.topology.getPeriodicBoxVectors()
+            # set electrochemical cell parameters...
+            self.set_electrochemical_cell_parameters( positions, boxVecs )
 
-        # now initialize charge on the electrodes based on applied Voltage ...
-        self.Cathode.initialize_Charge( self.Lgap, self.Lcell, self )
-        self.Anode.initialize_Charge( self.Lgap, self.Lcell, self )
+            # now initialize charge on the electrodes based on applied Voltage ...
+            self.Cathode.initialize_Charge( self.Lgap, self.Lcell, self )
+            self.Anode.initialize_Charge( self.Lgap, self.Lcell, self )
+        else :
+            print( "No Electrodes in the simulation !" )
+
 
 
     #******************************************
@@ -157,21 +161,36 @@ class MM_FixedVoltage(MM_base):
                         self.electrolyte_atom_indices.append(atom.index)
 
 
+    #************************************************
+    # This is just a wrapper that calls different versions
+    # of the Poisson solver depending on whether Cathode/Anode are present ...
+    #************************************************
+    def Poisson_solver_fixed_voltage(self, Niterations=3, compute_intermediate_forces = True , net_charge=0.0):
+
+        # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
+        if self.qmmm_ewald :
+            platform=self.simmd.context.getPlatform()
+            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
+
+        # if Electrodes are present, call most general version of Poisson solver ...
+        if self.Cathode is not None and self.Anode is not None :
+            self.Poisson_solver_fixed_voltage_Electrodes( Niterations , compute_intermediate_forces = compute_intermediate_forces )
+        else:
+            # no Electrodes, call version for Conductors only...
+            self.Poisson_solver_fixed_voltage_Conductors_only( Niterations , net_charge )
+
+        # if QM/MM , turn vext back on ...
+        if self.qmmm_ewald :
+            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "true" )
+
+
 
     #************************************************
     # This is the Fixed-Voltage Poisson Solver to optimize charges
     # on the electrode subject to applied voltage ...
     #************************************************
-    def Poisson_solver_fixed_voltage(self, Niterations=3):
+    def Poisson_solver_fixed_voltage_Electrodes(self, Niterations=3 , compute_intermediate_forces = True ):
       
-        # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
-        print( 'qmmm_ewald' , self.qmmm_ewald )
-        if self.qmmm_ewald :
-            print( 'here' )
-            platform=self.simmd.context.getPlatform()
-            #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
-            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "false" )
-
         #********* Analytic evaluation of total charge on electrodes based on electrolyte coordinates
         state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
         positions = state.getPositions()
@@ -208,11 +227,12 @@ class MM_FixedVoltage(MM_base):
                 # new charge that satisfies fixed Voltage boundary condition...
                 # when we switch to atomic units on the right, sigma/2*epsilon0 becomes 4*pi*sigma/2 , since 4*pi*epsilon0=1 in a.u.
                 q_i = 2.0 / ( 4.0 * numpy.pi ) * self.Cathode.area_atom * (self.Cathode.Voltage / self.Lgap + Ez_external) * conversion_KjmolNm_Au
+
+                atom.charge = self.update_charge_iteration( q_i_old , q_i )
                 # don't allow charges to get below small_threshold, otherwise can't compute Efield next iteration, and will get stuck at zero forever ...
-                if abs(q_i) < self.small_threshold:
-                    q_i = self.small_threshold  # Cathode, make positive
-                atom.charge = q_i
-                self.nbondedForce.setParticleParameters(index, q_i, 1.0 , 0.0)            
+                if abs(atom.charge) < self.small_threshold:
+                    atom.charge = self.small_threshold  # Cathode, make positive
+                self.nbondedForce.setParticleParameters(index, atom.charge, 1.0 , 0.0)            
 
             # now charges on anode ...
             for atom in self.Anode.electrode_atoms:
@@ -223,16 +243,18 @@ class MM_FixedVoltage(MM_base):
                 # new charge that satisfies fixed Voltage boundary condition...
                 # when we switch to atomic units on the right, sigma/2*epsilon0 becomes 4*pi*sigma/2 , since 4*pi*epsilon0=1 in a.u.
                 q_i = -2.0 / ( 4.0 * numpy.pi ) * self.Anode.area_atom * (self.Anode.Voltage / self.Lgap + Ez_external) * conversion_KjmolNm_Au
+
+                atom.charge = self.update_charge_iteration( q_i_old , q_i )
                 # don't allow charges to get below small_threshold, otherwise can't compute Efield next iteration, and will get stuck at zero forever ...
-                if abs(q_i) < self.small_threshold:
-                    q_i = -1.0 * self.small_threshold  # Anode, make negative
-                atom.charge = q_i
-                self.nbondedForce.setParticleParameters(index, q_i, 1.0 , 0.0)
+                if abs(atom.charge) < self.small_threshold:
+                    atom.charge = -1.0 * self.small_threshold  # Anode, make positive
+                self.nbondedForce.setParticleParameters(index, atom.charge, 1.0 , 0.0)
 
             # now charges on any conductors that are near electrodes...
             if self.Conductor_list:
                 for Conductor in self.Conductor_list:
-                    self.Numerical_charge_Conductor( Conductor , forces )
+                    self.Numerical_charge_Conductor( Conductor , forces , fix_Voltage = True , compute_intermediate_forces = compute_intermediate_forces )
+                    print( i_iter , 'Conductor charge is' , Conductor.get_total_charge() )
 
                 self.nbondedForce.updateParametersInContext(self.simmd.context)
                 # because conductors within cell are "part of electrolyte" as far as analytic charge formula is concerned, need to recomput analytic charges here...
@@ -247,10 +269,44 @@ class MM_FixedVoltage(MM_base):
         # this call is just for printing converged charges ...
         self.Scale_charges_analytic_general( print_flag = True )
 
-        # if QM/MM , turn vext back on ...
-        if self.qmmm_ewald :
-            #print(' property value '  , platform.getPropertyValue( self.simmd.context , 'ReferenceVextGrid') )
-            platform.setPropertyValue( self.simmd.context , 'ReferenceVextGrid' , "true" )
+
+
+    #************************************************
+    # This is the Poisson Solver to optimize image charges
+    # on Conductors only, without applied Voltage to Cathode/Anode ...
+    #
+    # Because the potential isn't specified, the net charge on the conductor must
+    # be specified to ensure a unique solution, since any addition of uniform charge
+    # over surface doesn't alter the conducting boundary condition
+    #************************************************
+    def Poisson_solver_fixed_voltage_Conductors_only(self, Niterations=3, net_charge = 0.0 ):
+
+       #*********  Self-consistently solve for image charges that obey conducting boundary condition ...
+        for i_iter in range(Niterations):
+            # need Efield on all electrode atoms, get this from forces on virtual conductors ...
+            state = self.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=False,getPositions=True)
+            forces = state.getForces()
+            if self.Conductor_list:
+                for Conductor in self.Conductor_list:
+                    self.Numerical_charge_Conductor( Conductor , forces , fix_Voltage = False )
+
+                    # fix total charge on conductor
+                    print( 'Conductor charge was' , Conductor.get_total_charge() , 'before fixing to ', net_charge )
+                    Q_numeric = Conductor.get_total_charge()
+                    # per atom charge
+                    dq_atom = -( Q_numeric - net_charge ) / Conductor.Natoms
+
+                    # make sure to not numerically zero charges so that field can't be computed ...
+                    if abs( dq_atom ) > 2.0 * self.small_threshold :
+                        # now ADD this excess charge to Conductor
+                        for atom in Conductor.electrode_atoms:
+                            index = atom.atom_index
+                            (q_i_quantity, sig, eps) = self.nbondedForce.getParticleParameters(index)
+                            q_i = q_i_quantity._value +  dq_atom
+                            atom.charge = q_i
+                            self.nbondedForce.setParticleParameters(index, q_i, sig , eps)
+
+                    self.nbondedForce.updateParametersInContext(self.simmd.context)
 
 
 
@@ -265,7 +321,7 @@ class MM_FixedVoltage(MM_base):
     #
     # 'Conductor' is a conductor object
     #***************************************
-    def Numerical_charge_Conductor( self, Conductor, forces ):
+    def Numerical_charge_Conductor( self, Conductor, forces , fix_Voltage = True , compute_intermediate_forces = True ):
        
         #****************************************************************************
         # Step 1:  Image charges on Conductor.  Project Efield to surface normal vector
@@ -276,34 +332,40 @@ class MM_FixedVoltage(MM_base):
         # Images charges are set on 'Virtual' atoms of Conductor ...
         for atom in Conductor.electrode_atoms:
             index = atom.atom_index
-            (q_i_quantity, sig, eps) = self.nbondedForce.getParticleParameters(index)
-            q_i = q_i_quantity._value # quantity = value * units ...
+            (q_i_old_quantity, sig, eps) = self.nbondedForce.getParticleParameters(index)
+            q_i_old = q_i_old_quantity._value # quantity = value * units ...
 
             E_external=[]
             # normal component of Field...
-            if abs(q_i) > (0.9*self.small_threshold): 
-                E_external.append( forces[index][0]._value / q_i ) # Ex
-                E_external.append( forces[index][1]._value / q_i ) # Ey
-                E_external.append( forces[index][2]._value / q_i ) # Ez
+            if abs(q_i_old) > (0.9*self.small_threshold): 
+                E_external.append( forces[index][0]._value / q_i_old ) # Ex
+                E_external.append( forces[index][1]._value / q_i_old ) # Ey
+                E_external.append( forces[index][2]._value / q_i_old ) # Ez
 
                 # project out normal
                 En_external = numpy.dot( numpy.array( E_external ) , numpy.array( [ atom.nx , atom.ny , atom.nz ] ) )
                 # now solve for surface charge, requiring Enormal be zero inside conductor...
                 q_i = 2.0 / ( 4.0 * numpy.pi ) * Conductor.area_atom * En_external * conversion_KjmolNm_Au
 
-                #print( "normal" , atom.nx , atom.ny , atom.nz , En_external , q_i )
+                atom.charge = self.update_charge_iteration( q_i_old , q_i )
 
             # don't allow charges to stay below small_threshold, otherwise can't compute Efield next iteration, and will get stuck at zero forever ...
             else: 
-                q_i = self.small_threshold  # Cathode, make positive
+                atom.charge = self.small_threshold  # Cathode, make positive
 
-            atom.charge = q_i
             self.nbondedForce.setParticleParameters(index, atom.charge, sig , eps)
 
+        # if we're not fixing the Voltage of the conductor(s) using electrodes, then we are done here ...
+        if not fix_Voltage:
+            return
 
-        self.nbondedForce.updateParametersInContext(self.simmd.context)
-        state = self.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=False,getPositions=True)
-        forces = state.getForces()
+        # if we are computing intermediate forces ...
+        # this is expensive, but will accelerate convergence
+        if compute_intermediate_forces:
+            self.nbondedForce.updateParametersInContext(self.simmd.context)
+            state = self.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=False,getPositions=True)
+            forces = state.getForces()
+
 
 
         #****************************************************************************
@@ -370,9 +432,20 @@ class MM_FixedVoltage(MM_base):
         for atom in Conductor.electrode_atoms:
             index = atom.atom_index
             (q_i_quantity, sig, eps) = self.nbondedForce.getParticleParameters(index)
+            q_i_old = q_i_quantity._value
             q_i = q_i_quantity._value +  dq_atom
-            atom.charge = q_i
-            self.nbondedForce.setParticleParameters(index, q_i, sig , eps)
+
+            atom.charge = self.update_charge_iteration( q_i_old , q_i )
+            self.nbondedForce.setParticleParameters(index, atom.charge, sig , eps)
+
+
+
+    #**************************************
+    # trivial scaling algorithm for updating charges during iterative solver
+    #**************************************
+    def update_charge_iteration( self , q_old , q_new , lambda_scale = 0.4 ):
+        q_update = (1.0 - lambda_scale) * q_old + lambda_scale * q_new
+        return q_update
 
 
 
@@ -438,36 +511,41 @@ class MM_FixedVoltage(MM_base):
     # if flag_SAPT_FF_exclusions=True, then will also set exclusions for SAPT-FF force field...
     #***************************************
     def generate_exclusions(self, water_name = 'HOH', flag_hybrid_water_model = False ,  flag_SAPT_FF_exclusions = True ):
-        # first electrodes, make temporary list of electrode atom indices to pass to exclusions subroutine
-        cathode_list=[]
-        for atom in self.Cathode.electrode_atoms:
-            cathode_list.append( atom.atom_index )
-        anode_list=[]
-        for atom in self.Anode.electrode_atoms:
-            anode_list.append( atom.atom_index )
 
-        # first electrostatic exclusions between all atoms in principle electrode sheet
-        exclusion_Electrode_NonbondedForce(self.simmd , self.system, cathode_list, cathode_list, self.customNonbondedForce , self.nbondedForce )
-        exclusion_Electrode_NonbondedForce(self.simmd , self.system, anode_list, anode_list, self.customNonbondedForce , self.nbondedForce)
+        # if Cathode/Anode are present, setup exclusions ...
+        if self.Cathode is not None and self.Anode is not None :
 
-        # now see if we need to add exclusions between any other chains in Cathode
-        if len( self.Cathode.electrode_extra_exclusions ) > 0 :
-            for chain1 in range(len( self.Cathode.electrode_extra_exclusions )):
-                # first exclude between principle electrode sheet and other chains
-                exclusion_Electrode_NonbondedForce(self.simmd , self.system, cathode_list, self.Cathode.electrode_extra_exclusions[chain1], self.customNonbondedForce , self.nbondedForce )
-                # now between extra chains
-                for chain2 in range(chain1 , len( self.Cathode.electrode_extra_exclusions )):
-                    exclusion_Electrode_NonbondedForce(self.simmd , self.system, self.Cathode.electrode_extra_exclusions[chain1], self.Cathode.electrode_extra_exclusions[chain2], self.customNonbondedForce , self.nbondedForce )
+            # first electrodes, make temporary list of electrode atom indices to pass to exclusions subroutine
+            cathode_list=[]
+            for atom in self.Cathode.electrode_atoms:
+                cathode_list.append( atom.atom_index )
+            anode_list=[]
+            for atom in self.Anode.electrode_atoms:
+                anode_list.append( atom.atom_index )
 
-        # now see if we need to add exclusions between any other chains in Anode
-        if len( self.Anode.electrode_extra_exclusions ) > 0 :
-            for chain1 in range(len( self.Anode.electrode_extra_exclusions )):
-                # first exclude between principle electrode sheet and other chains
-                exclusion_Electrode_NonbondedForce(self.simmd , self.system, anode_list, self.Anode.electrode_extra_exclusions[chain1], self.customNonbondedForce , self.nbondedForce )
-                # now between extra chains
-                for chain2 in range(chain1 , len( self.Anode.electrode_extra_exclusions )):
-                    exclusion_Electrode_NonbondedForce(self.simmd , self.system, self.Anode.electrode_extra_exclusions[chain1], self.Anode.electrode_extra_exclusions[chain2], self.customNonbondedForce , self.nbondedForce )
+            # first electrostatic exclusions between all atoms in principle electrode sheet
+            exclusion_Electrode_NonbondedForce(self.simmd , self.system, cathode_list, cathode_list, self.customNonbondedForce , self.nbondedForce )
+            exclusion_Electrode_NonbondedForce(self.simmd , self.system, anode_list, anode_list, self.customNonbondedForce , self.nbondedForce)
 
+            # now see if we need to add exclusions between any other chains in Cathode
+            if len( self.Cathode.electrode_extra_exclusions ) > 0 :
+                for chain1 in range(len( self.Cathode.electrode_extra_exclusions )):
+                    # first exclude between principle electrode sheet and other chains
+                    exclusion_Electrode_NonbondedForce(self.simmd , self.system, cathode_list, self.Cathode.electrode_extra_exclusions[chain1], self.customNonbondedForce , self.nbondedForce )
+                    # now between extra chains
+                    for chain2 in range(chain1 , len( self.Cathode.electrode_extra_exclusions )):
+                        exclusion_Electrode_NonbondedForce(self.simmd , self.system, self.Cathode.electrode_extra_exclusions[chain1], self.Cathode.electrode_extra_exclusions[chain2], self.customNonbondedForce , self.nbondedForce )
+            # now see if we need to add exclusions between any other chains in Anode
+            if len( self.Anode.electrode_extra_exclusions ) > 0 :
+                for chain1 in range(len( self.Anode.electrode_extra_exclusions )):
+                    # first exclude between principle electrode sheet and other chains
+                    exclusion_Electrode_NonbondedForce(self.simmd , self.system, anode_list, self.Anode.electrode_extra_exclusions[chain1], self.customNonbondedForce , self.nbondedForce )
+                    # now between extra chains
+                    for chain2 in range(chain1 , len( self.Anode.electrode_extra_exclusions )):
+                        exclusion_Electrode_NonbondedForce(self.simmd , self.system, self.Anode.electrode_extra_exclusions[chain1], self.Anode.electrode_extra_exclusions[chain2], self.customNonbondedForce , self.nbondedForce )
+        
+        
+        
         # now exclusions for Conductors on Electrodes ... DON'T exclude virtual/virtual, exclude real/real and virtual/real
         for Conductor in self.Conductor_list:
             # temporary lists
@@ -702,19 +780,25 @@ class MM_FixedVoltage(MM_base):
     #   how to automate this??
     #************************************************
     def write_electrode_charges( self, chargeFile ):
-        # first cathode then anode charges
-        for atom in self.Cathode.electrode_atoms:
-            chargeFile.write("{:f} ".format(atom.charge))          
-        #for atom in self.Anode.electrode_atoms:
-        #    chargeFile.write("{:f} ".format(atom.charge))
 
-        # loop over additional Conductors (buckyballs/nanotubes) if we have them
-        for Conductor in self.Conductor_list:
-            for atom in Conductor.electrode_atoms:
+        if self.Cathode is not None and self.Anode is not None :
+            # first cathode then anode charges
+            for atom in self.Cathode.electrode_atoms:
+                chargeFile.write("{:f} ".format(atom.charge))          
+
+            # loop over additional Conductors (buckyballs/nanotubes) if we have them
+            for Conductor in self.Conductor_list:
+                for atom in Conductor.electrode_atoms:
+                    chargeFile.write("{:f} ".format(atom.charge))
+
+            for atom in self.Anode.electrode_atoms:
                 chargeFile.write("{:f} ".format(atom.charge))
 
-        for atom in self.Anode.electrode_atoms:
-            chargeFile.write("{:f} ".format(atom.charge))
+        else:
+            # only have Conductors ....
+            for Conductor in self.Conductor_list:
+                for atom in Conductor.electrode_atoms:
+                    chargeFile.write("{:f} ".format(atom.charge))
 
 
         # write newline to charge file after charge write
@@ -722,6 +806,87 @@ class MM_FixedVoltage(MM_base):
         chargeFile.flush() # flush buffer
 
 
+#**************************************************
+# this is a stand-alone method to copy positions/charges from
+# one simulation context to another.  Currently we use this
+# if we are running a simulation to compute vext grid, and
+# we want to switch back and forth between GPU/CPU contexts ...
+#**************************************************
+def copy_positions_charges_between_contexts( simmd_copy_from , simmd_copy_to , nbondedForce_copy_from , nbondedForce_copy_to ):
+
+    # we might as well compare energies here to make sure copy over is correct.
+    # this will of course slow things down, but we are taking a big performance hit
+    # by transfering GPU/CPU and computing vext ...
+
+    # first copy charges so that we can reinitialize before setting positions ...
+    for atom in simmd_copy_from.topology.atoms():
+        # get charges from force field, these have been updated with the Poisson solver ...
+        (q_i, sig, eps) = nbondedForce_copy_from.getParticleParameters(atom.index)
+        # copy to context, might as well copy sig, eps also ...
+        nbondedForce_copy_to.setParticleParameters(atom.index, q_i, sig , eps)
+
+    # reinitialize context with the new charges ...
+    simmd_copy_to.context.reinitialize()
+
+    # now copy positions
+    state_copy_from = simmd_copy_from.context.getState(getEnergy=True,getForces=False,getVelocities=False,getPositions=True)
+    energy_copy_from = state_copy_from.getPotentialEnergy()
+    positions = state_copy_from.getPositions()
+    simmd_copy_to.context.setPositions(positions)
+
+
+    # turn off vext grid to test energy, assume simmd_copy_to is CPU ...
+    platform_copy_to = simmd_copy_to.context.getPlatform()
+    property_value_store = platform_copy_to.getPropertyValue( simmd_copy_to.context , 'ReferenceVextGrid')
+    platform_copy_to.setPropertyValue( simmd_copy_to.context , 'ReferenceVextGrid' , "false" )
+
+    # energy comparison
+    state_copy_to = simmd_copy_to.context.getState(getEnergy=True,getForces=False,getVelocities=False,getPositions=True)
+    energy_copy_to = state_copy_to.getPotentialEnergy()
+
+    print( 'Energy comparison from switching contexts ...' , energy_copy_from , energy_copy_to )
+
+    # now turn vext grid back on if it was previously ...
+    platform_copy_to.setPropertyValue( simmd_copy_to.context , 'ReferenceVextGrid' , property_value_store )
+
+
+
+# this is standalone helper method, outside of class
+# input is an OpenMM state object
+def get_box_vectors_Bohr( state, nm_to_bohr ):
+    # this is returned as a list of Openmm Vec3 filled with quantities (value, unit)
+    # convert to unitless list to pass to Psi4
+    box_temp = state.getPeriodicBoxVectors()
+    box=[]
+    for i in range(3):
+        box.append( [ box_temp[i][0]._value * nm_to_bohr , box_temp[i][1]._value * nm_to_bohr, box_temp[i][2]._value * nm_to_bohr ] )
+
+    return box
+
+
+# print a cube file with vext
+def print_cube_file( cubefile, vext , box_bohr , pme_grid_size_a , pme_grid_size_b , pme_grid_size_c ):
+    # first write header comment lines , need at least 1 atom for VMD so add junk atom ...
+    cubefile.write("Potential Cube file\n")
+    cubefile.write("-------------------\n")
+    cubefile.write("{0:5d}{1:12.6f}{2:12.6f}{3:12.6f}\n".format( 1 , 0.0 , 0.0 , 0.0 ) )
+    cubefile.write("{0:5d}{1:12.6f}{2:12.6f}{3:12.6f}\n".format( pme_grid_size_a , box_bohr[0][0] / pme_grid_size_a , box_bohr[0][1]/pme_grid_size_a , box_bohr[0][2]/pme_grid_size_a ) )
+    cubefile.write("{0:5d}{1:12.6f}{2:12.6f}{3:12.6f}\n".format( pme_grid_size_b , box_bohr[1][0] / pme_grid_size_b , box_bohr[1][1]/pme_grid_size_b , box_bohr[1][2]/pme_grid_size_b ) )
+    cubefile.write("{0:5d}{1:12.6f}{2:12.6f}{3:12.6f}\n".format( pme_grid_size_c , box_bohr[2][0] / pme_grid_size_c , box_bohr[2][1]/pme_grid_size_c , box_bohr[2][2]/pme_grid_size_c ) )
+    # add junk atom
+    cubefile.write("{0:5d}{1:12.6f}{2:12.6f}{3:12.6f}{4:12.6f}\n".format( 6 , 0.0 , 0.0 , 0.0 , 0.0 ) )
+
+    # now print vext cube data
+    for i in range(pme_grid_size_a):
+        for j in range(pme_grid_size_b):
+            for k in range(pme_grid_size_c):
+                index = i * pme_grid_size_b * pme_grid_size_c + j * pme_grid_size_c + k
+                cubefile.write( "{0:12.6f}".format( vext[index] ) )
+                if ( k % 6 == 5 ):
+                    cubefile.write("\n")
+            cubefile.write("\n")
+
+    cubefile.flush() # flush buffer
 
 
 

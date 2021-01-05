@@ -1,0 +1,9 @@
+the setting compute_intermediate_forces, e.g.
+
+MMsys.Poisson_solver_fixed_voltage( Niterations=30 , compute_intermediate_forces = True )
+
+is an important parameter which controls convergence.  It will accelerate convergence, but it is expensive because it means forces are recomputed after image charge solution on each conductor, and before determining fixed charge transfer to maintain constant V.
+
+Without electrolyte (e.g. Nanotube3_stacked/ system), we find that this setting probably should be used because it leads to a much more stable solution with faster convergence.
+
+with electrolyte (e.g. Nanotube3_stacked_electrolyte/ system), the setting compute_intermediate_forces = False leads to iterations/convergence not that dissimilar to compute_intermediate_forces = True.  This is because the close ions in the electrolyte better decouple image charge solution from fixed charge transfer.

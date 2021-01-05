@@ -1,0 +1,170 @@
+<ForceField>
+ <AtomTypes>
+  <Type name="He1" class="He" element="He" mass="0.0"/>
+  <Type name="He2" class="He" element="He" mass="0.0"/>
+  <Type name="He3" class="He" element="He" mass="0.0"/>
+  <Type name="He4" class="He" element="He" mass="0.0"/>
+  <Type name="He5" class="He" element="He" mass="0.0"/>
+  <Type name="He6" class="He" element="He" mass="0.0"/>
+  <Type name="He7" class="He" element="He" mass="0.0"/>
+  <Type name="He8" class="He" element="He" mass="0.0"/>
+  <Type name="He9" class="He" element="He" mass="0.0"/>
+  <Type name="He10" class="He" element="He" mass="0.0"/>
+  <Type name="He11" class="He" element="He" mass="0.0"/>
+  <Type name="He12" class="He" element="He" mass="0.0"/>
+  <Type name="He13" class="He" element="He" mass="0.0"/>
+  <Type name="He14" class="He" element="He" mass="0.0"/>
+  <Type name="He15" class="He" element="He" mass="0.0"/>
+  <Type name="He16" class="He" element="He" mass="0.0"/>
+  <Type name="He17" class="He" element="He" mass="0.0"/>
+  <Type name="He18" class="He" element="He" mass="0.0"/>
+  <Type name="He19" class="He" element="He" mass="0.0"/>
+  <Type name="He20" class="He" element="He" mass="0.0"/>
+  <Type name="He21" class="He" element="He" mass="0.0"/>
+  <Type name="He22" class="He" element="He" mass="0.0"/>
+  <Type name="He23" class="He" element="He" mass="0.0"/>
+  <Type name="He24" class="He" element="He" mass="0.0"/>
+  <Type name="He25" class="He" element="He" mass="0.0"/>
+  <Type name="He26" class="He" element="He" mass="0.0"/>
+  <Type name="He27" class="He" element="He" mass="0.0"/>
+  <Type name="He28" class="He" element="He" mass="0.0"/>
+  <Type name="He29" class="He" element="He" mass="0.0"/>
+  <Type name="He30" class="He" element="He" mass="0.0"/>
+  <Type name="He31" class="He" element="He" mass="0.0"/>
+  <Type name="He32" class="He" element="He" mass="0.0"/>
+  <Type name="He33" class="He" element="He" mass="0.0"/>
+  <Type name="He34" class="He" element="He" mass="0.0"/>
+  <Type name="He35" class="He" element="He" mass="0.0"/>
+  <Type name="He36" class="He" element="He" mass="0.0"/>
+  <Type name="He37" class="He" element="He" mass="0.0"/>
+  <Type name="He38" class="He" element="He" mass="0.0"/>
+  <Type name="He39" class="He" element="He" mass="0.0"/>
+  <Type name="He40" class="He" element="He" mass="0.0"/>
+  <Type name="Ne1" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne2" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne3" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne4" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne5" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne6" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne7" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne8" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne9" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne10" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne11" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne12" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne13" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne14" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne15" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne16" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne17" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne18" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne19" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne20" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne21" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne22" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne23" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne24" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne25" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne26" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne27" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne28" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne29" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne30" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne31" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne32" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne33" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne34" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne35" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne36" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne37" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne38" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne39" class="Ne" element="Ne" mass="0.0"/>
+  <Type name="Ne40" class="Ne" element="Ne" mass="0.0"/>
+ </AtomTypes>
+ <Residues>
+  <Residue name="He">
+   <Atom name="He1" type="He1"/> 
+   <Atom name="He2" type="He2"/> 
+   <Atom name="He3" type="He3"/> 
+   <Atom name="He4" type="He4"/> 
+   <Atom name="He5" type="He5"/> 
+   <Atom name="He6" type="He6"/> 
+   <Atom name="He7" type="He7"/> 
+   <Atom name="He8" type="He8"/> 
+   <Atom name="He9" type="He9"/> 
+   <Atom name="He10" type="He10"/> 
+   <Atom name="He11" type="He11"/> 
+   <Atom name="He12" type="He12"/> 
+   <Atom name="He13" type="He13"/> 
+   <Atom name="He14" type="He14"/> 
+   <Atom name="He15" type="He15"/> 
+   <Atom name="He16" type="He16"/> 
+   <Atom name="He17" type="He17"/> 
+   <Atom name="He18" type="He18"/> 
+   <Atom name="He19" type="He19"/> 
+   <Atom name="He20" type="He20"/> 
+   <Atom name="He21" type="He21"/> 
+   <Atom name="He22" type="He22"/> 
+   <Atom name="He23" type="He23"/> 
+   <Atom name="He24" type="He24"/> 
+   <Atom name="He25" type="He25"/> 
+   <Atom name="He26" type="He26"/> 
+   <Atom name="He27" type="He27"/> 
+   <Atom name="He28" type="He28"/> 
+   <Atom name="He29" type="He29"/> 
+   <Atom name="He30" type="He30"/> 
+   <Atom name="He31" type="He31"/> 
+   <Atom name="He32" type="He32"/> 
+   <Atom name="He33" type="He33"/> 
+   <Atom name="He34" type="He34"/> 
+   <Atom name="He35" type="He35"/> 
+   <Atom name="He36" type="He36"/> 
+   <Atom name="He37" type="He37"/> 
+   <Atom name="He38" type="He38"/> 
+   <Atom name="He39" type="He39"/> 
+   <Atom name="He40" type="He40"/> 
+  </Residue>
+  <Residue name="Ne">
+   <Atom name="Ne1" type="Ne1"/> 
+   <Atom name="Ne2" type="Ne2"/> 
+   <Atom name="Ne3" type="Ne3"/> 
+   <Atom name="Ne4" type="Ne4"/> 
+   <Atom name="Ne5" type="Ne5"/> 
+   <Atom name="Ne6" type="Ne6"/> 
+   <Atom name="Ne7" type="Ne7"/> 
+   <Atom name="Ne8" type="Ne8"/> 
+   <Atom name="Ne9" type="Ne9"/> 
+   <Atom name="Ne10" type="Ne10"/> 
+   <Atom name="Ne11" type="Ne11"/> 
+   <Atom name="Ne12" type="Ne12"/> 
+   <Atom name="Ne13" type="Ne13"/> 
+   <Atom name="Ne14" type="Ne14"/> 
+   <Atom name="Ne15" type="Ne15"/> 
+   <Atom name="Ne16" type="Ne16"/> 
+   <Atom name="Ne17" type="Ne17"/> 
+   <Atom name="Ne18" type="Ne18"/> 
+   <Atom name="Ne19" type="Ne19"/> 
+   <Atom name="Ne20" type="Ne20"/> 
+   <Atom name="Ne21" type="Ne21"/> 
+   <Atom name="Ne22" type="Ne22"/> 
+   <Atom name="Ne23" type="Ne23"/> 
+   <Atom name="Ne24" type="Ne24"/> 
+   <Atom name="Ne25" type="Ne25"/> 
+   <Atom name="Ne26" type="Ne26"/> 
+   <Atom name="Ne27" type="Ne27"/> 
+   <Atom name="Ne28" type="Ne28"/> 
+   <Atom name="Ne29" type="Ne29"/> 
+   <Atom name="Ne30" type="Ne30"/> 
+   <Atom name="Ne31" type="Ne31"/> 
+   <Atom name="Ne32" type="Ne32"/> 
+   <Atom name="Ne33" type="Ne33"/> 
+   <Atom name="Ne34" type="Ne34"/> 
+   <Atom name="Ne35" type="Ne35"/> 
+   <Atom name="Ne36" type="Ne36"/> 
+   <Atom name="Ne37" type="Ne37"/> 
+   <Atom name="Ne38" type="Ne38"/> 
+   <Atom name="Ne39" type="Ne39"/> 
+   <Atom name="Ne40" type="Ne40"/> 
+  </Residue>
+ </Residues>
+</ForceField>

@@ -40,22 +40,20 @@ conversion_eV_Kjmol = 96.487
 
 #  Simple class to hold atom info.  It is named specifically for this code (atom_MM), so as not to be confused with intrinsic atom class of OpenMM ...
 class atom_MM(object):
-    def __init__(self, element, charge, atom_index ):
+    def __init__(self, element, charge, atom_index , x , y , z ):
         self.element = element
         self.charge  = charge
         self.atom_index = atom_index
-        # initialize positions to zero in lieu of anything better...
-        self.x = 0.0; self.y=0.0; self.z=0.0
+        self.x = x; self.y=y; self.z=z
 
         # this is vector normal to conductor surface at this atom.
         # will only be used by certain classes (e.g. Buckyball_Virtual)
         # we don't define getters/setters for this because it is so specialized...
         self.nx = 0.0; self.ny = 0.0; self.nz = 0.0
 
-    def set_xyz( self, x , y , z ):
-        self.x = x
-        self.y = y
-        self.z = z
+        # this will be set within specific child class 
+        self.area_atom = 0.0
+
 
 
 #*********************************
@@ -108,6 +106,12 @@ class Conductor_Virtual(object):
         flag=0 # make sure we match electrodes
         # loop over residues, and find electrode       
 
+        # need positions for creating atom objects ... note electrode positions won't change during the simulation
+        # so we can store these initially once and for all ...
+        state = MMsys.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
+        positions = state.getPositions()
+
+
         if chain_flag == True:
         # ***** initialize electrode by chain
             for chain in MMsys.simmd.topology.chains():
@@ -119,7 +123,7 @@ class Conductor_Virtual(object):
                             # get initial charge from force field
                             (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
                             # create atom_MM object
-                            atom_object = atom_MM( element.symbol , q_i._value , atom.index )
+                            atom_object = atom_MM( element.symbol , q_i._value , atom.index , positions[atom.index][0]._value , positions[atom.index][1]._value , positions[atom.index][2]._value )
                             # add atom_object to electrode_atoms list
                             self.electrode_atoms.append( atom_object )
 
@@ -146,7 +150,7 @@ class Conductor_Virtual(object):
                             # get initial charge from force field
                             (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
                             # create atom_MM object
-                            atom_object = atom_MM( element.symbol , q_i._value , atom.index )
+                            atom_object = atom_MM( element.symbol , q_i._value , atom.index, positions[atom.index][0]._value , positions[atom.index][1]._value , positions[atom.index][2]._value )
                             # add atom_object to electrode_atoms list
                             self.electrode_atoms.append( atom_object )
 
@@ -160,7 +164,7 @@ class Conductor_Virtual(object):
         self.Natoms = len(self.electrode_atoms)
 
 
-   #*******************************************
+    #*******************************************
     # getter for returning the total charge on the electrode
     def get_total_charge( self ):
         sumQ = 0.0
@@ -276,6 +280,9 @@ class Electrode_Virtual(Conductor_Virtual):
         # because for one of these electrodes the normal vector will be along negative Z-axis ...
         for atom in self.electrode_atoms:
             atom.nx = 0.0 ; atom.ny = 0.0 ; atom.nz = 1.0
+            # set area of atom
+            atom.area_atom = self.area_atom
+               
 
 
 
@@ -422,6 +429,9 @@ class Buckyball_Virtual(Conductor_Virtual):
        # In this child class, we need an additional electrode_atoms_real list for the 'real' atoms ...
        self.electrode_atoms_real=[]
 
+       state = MMsys.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
+       positions = state.getPositions()
+
        # assume virtual first, then real, skip to real ...
        identifier = electrode_identifier[1]
        for chain in MMsys.simmd.topology.chains():
@@ -432,15 +442,12 @@ class Buckyball_Virtual(Conductor_Virtual):
                        # get initial charge from force field
                        (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
                        # create atom_MM object
-                       atom_object = atom_MM( element.symbol , q_i._value , atom.index )
+                       atom_object = atom_MM( element.symbol , q_i._value , atom.index , positions[atom.index][0]._value , positions[atom.index][1]._value , positions[atom.index][2]._value )
                        # add atom_object to electrode_atoms list
                        self.electrode_atoms_real.append( atom_object )
 
 
        # Find center of buckyball
-       state = MMsys.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
-       positions = state.getPositions()
-
        self.r_center = [ 0.0 , 0.0 , 0.0 ] # in nm
        for atom in self.electrode_atoms:
            self.r_center[0] += positions[atom.atom_index][0]._value 
@@ -470,6 +477,8 @@ class Buckyball_Virtual(Conductor_Virtual):
            nz = positions[atom.atom_index][2]._value - self.r_center[2]           
            norm = sqrt( nx**2 + ny**2 + nz**2)
            atom.nx = nx / norm ; atom.ny = ny / norm ; atom.nz = nz / norm
+           # set area of atom
+           atom.area_atom = self.area_atom
 
        # find close neighbor conductor/atom distance ...
        self.find_contact_neighbor_conductor( positions , self.r_center , MMsys )
@@ -507,6 +516,9 @@ class Nanotube_Virtual(Conductor_Virtual):
        # In this child class, we need an additional electrode_atoms_real list for the 'real' atoms ...
        self.electrode_atoms_real=[]
 
+       state = MMsys.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
+       positions = state.getPositions()
+
        # assume virtual first, then real, skip to real ...
        identifier = electrode_identifier[1]
        for chain in MMsys.simmd.topology.chains():
@@ -517,15 +529,12 @@ class Nanotube_Virtual(Conductor_Virtual):
                        # get initial charge from force field
                        (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(atom.index)
                        # create atom_MM object
-                       atom_object = atom_MM( element.symbol , q_i._value , atom.index )
+                       atom_object = atom_MM( element.symbol , q_i._value , atom.index , positions[atom.index][0]._value , positions[atom.index][1]._value , positions[atom.index][2]._value )
                        # add atom_object to electrode_atoms list
                        self.electrode_atoms_real.append( atom_object )
 
 
        # Find center of nanotube
-       state = MMsys.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
-       positions = state.getPositions()
-
        self.r_center = [ 0.0 , 0.0 , 0.0 ] # in nm
        for atom in self.electrode_atoms:
            self.r_center[0] += positions[atom.atom_index][0]._value 
@@ -568,6 +577,10 @@ class Nanotube_Virtual(Conductor_Virtual):
        # compute area per atom
        self.area_atom = 2.0 * numpy.pi * self.radius * self.length / self.Natoms
 
+       # set area of atom in each atom object
+       for atom in self.electrode_atoms:
+           atom.area_atom = self.area_atom
+
        # find close neighbor conductor/atom distance ...
        dr_vector = self.find_contact_neighbor_conductor( positions , self.r_center , MMsys )
        
@@ -577,7 +590,8 @@ class Nanotube_Virtual(Conductor_Virtual):
            radial_vector =  self.project_orthogonal_to_axis( numpy.asarray(dr_vector) )
            self.dr_center_contact = numpy.sqrt( radial_vector[0]**2 + radial_vector[1]**2 + radial_vector[2]**2 )
 
-       print( "Conductor " , self.close_conductor_Electrode  , self.Electrode_contact_atom.atom_index , self.dr_center_contact )
+       #print( "Conductor " , self.close_conductor_Electrode  , self.Electrode_contact_atom.atom_index , self.dr_center_contact )
+
 
 
     # this method takes as input a vector, and projects out the component that is orthogonal to the nanotube axis

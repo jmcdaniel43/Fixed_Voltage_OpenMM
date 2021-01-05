@@ -31,10 +31,12 @@
   <Improper class1="Cgt" class2="" class3="" class4="" periodicity1="2" phase1="3.14159265358979" k1="4.1840"/>
  </PeriodicTorsionForce>
  <NonbondedForce coulomb14scale="0" lj14scale="0">
-  <Atom class="Cgtc" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
+  <Atom class="Cnac" charge="0.0001" sigma="1.00000" epsilon="0.00000"/>
+  <Atom class="Cnan" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
+  <Atom class="Cgtc" charge="0.01" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Cgtr" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Cgtd" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
-  <Atom class="Cgt" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
+  <Atom class="Cgt" charge="-0.01" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Hgt" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Cgts" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Hgts" charge="0.0" sigma="1.00000" epsilon="0.00000"/>
@@ -42,7 +44,5 @@
   <Atom class="HO" charge="0.435" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Ogtr" charge="-0.435" sigma="1.00000" epsilon="0.00000"/>
   <Atom class="Hgtr" charge="0.435" sigma="1.00000" epsilon="0.00000"/>
-  <Atom class="He" charge="0.01" sigma="1.00000" epsilon="0.00000"/>
-  <Atom class="Ne" charge="-0.01" sigma="1.00000" epsilon="0.00000"/>
  </NonbondedForce>
 </ForceField>
