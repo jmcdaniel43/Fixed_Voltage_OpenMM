@@ -165,7 +165,7 @@ class MM_FixedVoltage(MM_base):
     # This is just a wrapper that calls different versions
     # of the Poisson solver depending on whether Cathode/Anode are present ...
     #************************************************
-    def Poisson_solver_fixed_voltage(self, Niterations=3, compute_intermediate_forces = True , net_charge=0.0):
+    def Poisson_solver_fixed_voltage(self, Niterations=3, compute_intermediate_forces = True , net_charge=0.0, print_flag = False ):
 
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
         if self.qmmm_ewald :
@@ -174,7 +174,7 @@ class MM_FixedVoltage(MM_base):
 
         # if Electrodes are present, call most general version of Poisson solver ...
         if self.Cathode is not None and self.Anode is not None :
-            self.Poisson_solver_fixed_voltage_Electrodes( Niterations , compute_intermediate_forces = compute_intermediate_forces )
+            self.Poisson_solver_fixed_voltage_Electrodes( Niterations , compute_intermediate_forces = compute_intermediate_forces , print_flag = print_flag )
         else:
             # no Electrodes, call version for Conductors only...
             self.Poisson_solver_fixed_voltage_Conductors_only( Niterations , net_charge )
@@ -189,7 +189,7 @@ class MM_FixedVoltage(MM_base):
     # This is the Fixed-Voltage Poisson Solver to optimize charges
     # on the electrode subject to applied voltage ...
     #************************************************
-    def Poisson_solver_fixed_voltage_Electrodes(self, Niterations=3 , compute_intermediate_forces = True ):
+    def Poisson_solver_fixed_voltage_Electrodes(self, Niterations=3 , compute_intermediate_forces = True , print_flag = False ):
       
         #********* Analytic evaluation of total charge on electrodes based on electrolyte coordinates
         state = self.simmd.context.getState(getEnergy=False,getForces=False,getVelocities=False,getPositions=True)
@@ -266,8 +266,23 @@ class MM_FixedVoltage(MM_base):
             # update charges in context ...
             self.nbondedForce.updateParametersInContext(self.simmd.context)
 
+            if print_flag == True :
+                self.print_charges_on_Conductors( i_iter , self.Cathode , self.Anode , self.Conductor_list )
+
         # this call is just for printing converged charges ...
-        self.Scale_charges_analytic_general( print_flag = True )
+        #self.Scale_charges_analytic_general( print_flag = True )
+
+
+    #***********************************************
+    # prints total charges on all conductors:  Should be called after a Poisson solver iteration
+    #***********************************************
+    def print_charges_on_Conductors( self , i_iter , Cathode , Anode , Conductor_list ): 
+        print( 'Total Charges on conductors after Poisson Solver iteratation ' , i_iter )
+        print( 'Cathode total charge ' , Cathode.get_total_charge() )
+        print( 'Anode total charge ' , Anode.get_total_charge() )
+        print( 'total charge on additional conductors ' )
+        for Conductor in Conductor_list:
+            print( 'charge ' , Conductor.get_total_charge() )
 
 
 
@@ -694,9 +709,9 @@ class MM_FixedVoltage(MM_base):
             self.simmd.context.setPositions(oldpos)
 
         if self.MC.ntrials > 50 :
-            print(" After 50 more MC steps ...")
-            print("dE, exp(-dE/RT) ", w, numpy.exp(-w/ self.MC.RT))
-            print("Accept ratio for last 50 MC moves", self.MC.naccept / self.MC.ntrials)
+            #print(" After 50 more MC steps ...")
+            #print("dE, exp(-dE/RT) ", w, numpy.exp(-w/ self.MC.RT))
+            #print("Accept ratio for last 50 MC moves", self.MC.naccept / self.MC.ntrials)
             if (self.MC.naccept < 0.25*self.MC.ntrials) :
                 self.MC.shiftscale /= 1.1
             elif self.MC.naccept > 0.75*self.MC.ntrials :
