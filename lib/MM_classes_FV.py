@@ -254,7 +254,7 @@ class MM_FixedVoltage(MM_base):
             if self.Conductor_list:
                 for Conductor in self.Conductor_list:
                     self.Numerical_charge_Conductor( Conductor , forces , fix_Voltage = True , compute_intermediate_forces = compute_intermediate_forces )
-                    print( i_iter , 'Conductor charge is' , Conductor.get_total_charge() )
+                    #print( i_iter , 'Conductor charge is' , Conductor.get_total_charge() )
 
                 self.nbondedForce.updateParametersInContext(self.simmd.context)
                 # because conductors within cell are "part of electrolyte" as far as analytic charge formula is concerned, need to recomput analytic charges here...
