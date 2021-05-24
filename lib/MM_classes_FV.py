@@ -821,6 +821,67 @@ class MM_FixedVoltage(MM_base):
         chargeFile.flush() # flush buffer
 
 
+    #************************************************
+    # this method reads electrode charges from output file for simulation restart
+    # and sets the charges in the electrode data structures and context
+    #
+    #  FIX:  same issue as write_electrode_charges with ordering ...
+    #************************************************
+    def read_and_set_electrode_charges( self, chargeFile , charge_name ):
+        # this file is already open for append, close, read, then re-open for append
+        chargeFile.close()
+
+	# reopen for read, and read charges from last line
+        with open(charge_name) as f:
+            for line in f:
+                pass
+            last_line = line
+
+        charges = line.split()
+
+        charge_index=0
+        # now assign charges in same order that they were written to file
+        if self.Cathode is not None and self.Anode is not None :
+            # first cathode then anode charges
+            for atom in self.Cathode.electrode_atoms:
+                atom.charge = float(charges[charge_index])
+                (q_i_old, sig, eps) = self.nbondedForce.getParticleParameters(atom.atom_index)
+                self.nbondedForce.setParticleParameters(atom.atom_index, atom.charge, sig , eps)
+                charge_index += 1          
+
+            # loop over additional Conductors (buckyballs/nanotubes) if we have them
+            for Conductor in self.Conductor_list:
+                for atom in Conductor.electrode_atoms:
+                    atom.charge = float(charges[charge_index])
+                    (q_i_old, sig, eps) = self.nbondedForce.getParticleParameters(atom.atom_index)
+                    self.nbondedForce.setParticleParameters(atom.atom_index, atom.charge, sig , eps)
+                    charge_index += 1
+
+            for atom in self.Anode.electrode_atoms:
+                atom.charge = float(charges[charge_index])
+                (q_i_old, sig, eps) = self.nbondedForce.getParticleParameters(atom.atom_index)
+                self.nbondedForce.setParticleParameters(atom.atom_index, atom.charge, sig , eps)
+                charge_index += 1
+
+        else:
+            # only have Conductors ....
+            for Conductor in self.Conductor_list:
+                for atom in Conductor.electrode_atoms:
+                    atom.charge = float(charges[charge_index])
+                    (q_i_old, sig, eps) = self.nbondedForce.getParticleParameters(atom.atom_index)
+                    self.nbondedForce.setParticleParameters(atom.atom_index, atom.charge, sig , eps)
+                    charge_index += 1
+
+        # put charges into context
+        self.nbondedForce.updateParametersInContext(self.simmd.context)
+
+        # close and reopen for append
+        chargeFile.close()
+        chargeFile = open(charge_name, "a")
+        
+        return chargeFile
+
+
 #**************************************************
 # this is a stand-alone method to copy positions/charges from
 # one simulation context to another.  Currently we use this
