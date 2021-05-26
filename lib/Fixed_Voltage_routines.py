@@ -274,6 +274,7 @@ class Electrode_Virtual(Conductor_Virtual):
         self.sheet_area = numpy.dot(crossBox, crossBox)**0.5 / nanometer**2 # divide by nanometer to get rid of units, this is area in nm^2 ...
         self.area_atom = self.sheet_area / self.Natoms # area per atom in nm^2
 
+        self.Q_electrolyte = 0.0 # Electrolyte charge will be computed in compute_Electrode_charge_analytic
 
         # FIX:  Currently we assume conductors are placed only on cathode/left electrode of cell.
         # the below code needs to be generalized if conductors are placed on both cathode/anode,
@@ -343,6 +344,8 @@ class Electrode_Virtual(Conductor_Virtual):
         #********** Geometrical contribution:  Note use the Sheet Area rather than area_atom since we want total charge...
         self.Q_analytic = sign / ( 4.0 * numpy.pi ) * self.sheet_area * (self.Voltage / MMsys.Lgap + self.Voltage / MMsys.Lcell) * conversion_KjmolNm_Au
 
+        self.Q_electrolyte = 0.0 # Recompute electrolyte charge, in case of redox process
+
         #********** Image charge contribution:  sum over electrolyte atoms and Drude oscillators ...
         for index in MMsys.electrolyte_atom_indices:
             (q_i, sig, eps) = MMsys.nbondedForce.getParticleParameters(index)
@@ -350,6 +353,7 @@ class Electrode_Virtual(Conductor_Virtual):
             z_distance = abs(z_atom - z_opposite)
             # add image charge contribution
             self.Q_analytic += (z_distance / MMsys.Lcell) * (- q_i._value)
+            self.Q_electrolyte += q_i._value
 
         #*********  Conductors are effectively in electrolyte as far as flat electrodes are concerned, sum over these atoms ...
         if Conductor_list:
