@@ -28,6 +28,7 @@ class MM_FixedVoltage(MM_base):
     # required input: 1) list of pdb files, 2) list of residue xml files, 3) list of force field xml files.
     def __init__( self , pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
         self.qmmm_ewald = False
+        self.analytic_charge_scaling = True # Turn on/off analytic charge scaling, default is on
 
         # constructor for Parent...
         super().__init__( pdb_list , residue_xml_list , ff_xml_list , **kwargs )
@@ -50,9 +51,9 @@ class MM_FixedVoltage(MM_base):
             self.write_frequency = int(kwargs['write_frequency'])
         if 'simulation_length' in kwargs :
             self.simulation_length = float(kwargs['simulation_length'])
-            self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency) 
-
-
+            self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency)
+        if 'analytic_charge_scaling' in kwargs:
+            self.analytic_charge_scaling=kwargs['analytic_charge_scaling'] 
 
 
     #***********************************************
@@ -201,7 +202,7 @@ class MM_FixedVoltage(MM_base):
         #print(" initial charge on Cathode/Anode " , self.Cathode.get_total_charge() , self.Anode.get_total_charge() )
 
         # make sure these are equal and opposite, but only if no additional conductors ...
-        if (abs(self.Cathode.Q_analytic)-abs(self.Anode.Q_analytic)) > self.small_threshold and not self.Conductor_list :
+        if abs(self.Cathode.Q_analytic + self.Anode.Q_analytic + self.Cathode.Q_electrolyte) > self.small_threshold and not self.Conductor_list :
            print( "Analytic charges on Cathode and Anode don't match...something is wrong!" )
            sys.exit(0)
 
@@ -262,7 +263,9 @@ class MM_FixedVoltage(MM_base):
                 self.Anode.compute_Electrode_charge_analytic( self , positions , self.Conductor_list, z_opposite = self.Cathode.z_pos )
 
             # Now scale charges to exact Analytic normalization....
-            self.Scale_charges_analytic_general()
+            if self.analytic_charge_scaling == True:
+                self.Scale_charges_analytic_general()
+
             # update charges in context ...
             self.nbondedForce.updateParametersInContext(self.simmd.context)
 
