@@ -3,13 +3,13 @@ from simtk.openmm import *
 from simtk.unit import *
 from sys import stdout
 #******* Fixed voltage routines
-from Fixed_Voltage_routines import *
+from .Fixed_Voltage_routines import *
 #******* electrode exclusions routines
-from electrode_exclusions import *
+from .electrode_exclusions import *
 #******** contains parent class
-from shared.MM_class_base import *
+from .shared.MM_class_base import *
 #******** exclusions for force field 
-from shared.MM_exclusions_base import *
+from .shared.MM_exclusions_base import *
 #*****************
 
 import random
@@ -28,6 +28,7 @@ class MM_FixedVoltage(MM_base):
     # required input: 1) list of pdb files, 2) list of residue xml files, 3) list of force field xml files.
     def __init__( self , pdb_list , residue_xml_list , ff_xml_list , **kwargs  ):
         self.qmmm_ewald = False
+        self.FV_solver = True
         self.analytic_charge_scaling = True # Turn on/off analytic charge scaling, default is on
 
         # constructor for Parent...
@@ -96,8 +97,9 @@ class MM_FixedVoltage(MM_base):
             self.set_electrochemical_cell_parameters( positions, boxVecs )
 
             # now initialize charge on the electrodes based on applied Voltage ...
-            self.Cathode.initialize_Charge( self.Lgap, self.Lcell, self )
-            self.Anode.initialize_Charge( self.Lgap, self.Lcell, self )
+            if self.FV_solver == True:
+                self.Cathode.initialize_Charge( self.Lgap, self.Lcell, self )
+                self.Anode.initialize_Charge( self.Lgap, self.Lcell, self )
         else :
             print( "No Electrodes in the simulation !" )
 
@@ -168,6 +170,8 @@ class MM_FixedVoltage(MM_base):
     #************************************************
     def Poisson_solver_fixed_voltage(self, Niterations=3, compute_intermediate_forces = True , net_charge=0.0, print_flag = False ):
 
+        if self.FV_solver == False:
+            return
         # if QM/MM , make sure we turn off vext_grid calculation to save time with forces... turn back on after converged
         if self.qmmm_ewald :
             platform=self.simmd.context.getPlatform()
