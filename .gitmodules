@@ -1,3 +1,4 @@
 [submodule "lib/shared"]
 	path = lib/shared
 	url = https://github.com/jmcdaniel43/MM_base
+	branch = main
