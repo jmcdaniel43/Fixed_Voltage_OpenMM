@@ -55,7 +55,8 @@ class MM_FixedVoltage(MM_base):
             self.loop_range = int(self.simulation_length * 1000000 / self.write_frequency)
         if 'analytic_charge_scaling' in kwargs:
             self.analytic_charge_scaling=kwargs['analytic_charge_scaling'] 
-
+        if 'FV_solver' in kwargs:
+            self.FV_solver=kwargs['FV_solver']
 
     #***********************************************
     # this initializes the Electrode objects for Constant-Voltage simulation
