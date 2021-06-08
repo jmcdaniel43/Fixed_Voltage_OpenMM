@@ -13,6 +13,7 @@ import numpy as np
 import urllib.request
 from add_customnonbond_xml import add_CustomNonbondedForce_SAPTFF_parameters
 # other stuff
+from os import path
 import sys
 from sys import stdout
 from time import gmtime, strftime
@@ -31,9 +32,15 @@ sys.setrecursionlimit(2000)
 #**********************************************************************
 
 # a few run control settings...   WARNING:  write_charge = True will generate a lot of data !!!
-simulation_time_ns = 1 ; freq_charge_update_fs = 50 ; freq_traj_output_ps = 50 ; write_charges = True
+simulation_time_ns = 1 ; freq_charge_update_fs = 25 ; freq_traj_output_ps = 50 ;  freq_checkpoint_ps = 10 ; write_charges = True
 
-chargeFile = open("charges.dat", "w")
+checkpoint = 'state.chk'
+charge_name = 'charges.dat'
+if path.exists(charge_name):
+    chargeFile = open(charge_name, "a")
+else:
+    chargeFile = open(charge_name, "w")
+
 
 #******************************************************************
 #                Choose type of simulation
@@ -89,6 +96,16 @@ MMsys.initialize_electrolyte(Natom_cutoff=100)  # make sure all electrode residu
 # set flag_SAPT_FF_exclusions = False if not using SAPT-FF force field
 MMsys.generate_exclusions( flag_SAPT_FF_exclusions = True )
 
+# load checkpoint for restarting if it is here ...
+if path.exists(checkpoint):
+    print( "restarting simulation from checkpoint ", checkpoint )
+    MMsys.simmd.loadCheckpoint(checkpoint)
+
+
+if simulation_type == "Constant_V":
+    # call Poisson solver with large number of iterations for initialization ...
+    MMsys.Poisson_solver_fixed_voltage( Niterations=5 , compute_intermediate_forces = True , print_flag=True )
+
 state = MMsys.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=False,getPositions=True)
 positions = state.getPositions()
 
@@ -99,10 +116,10 @@ for j in range(MMsys.system.getNumForces()):
     print(type(f), str(MMsys.simmd.context.getState(getEnergy=True, groups=2**j).getPotentialEnergy()))
 
 
-
 # write initial pdb with Drudes, and setup trajectory output
 PDBFile.writeFile(MMsys.simmd.topology, positions, open('start_drudes.pdb', 'w'))
 
+append_trajectory = False
 if simulation_type == "MC_equil":
     # Monte Carlo equilibration, initialize parameters ...  currently set to move Anode, keep Cathode fixed...
     celldim = MMsys.simmd.topology.getUnitCellDimensions()
@@ -110,8 +127,12 @@ if simulation_type == "MC_equil":
     trajectory_file_name = 'equil_MC.dcd'
 else :
     trajectory_file_name = 'FV_NVT.dcd'
+    # if trajectory file exists, append to it
+    if path.exists(trajectory_file_name):
+        append_trajectory=True
 
-MMsys.set_trajectory_output( trajectory_file_name , freq_traj_output_ps * 1000 )
+MMsys.set_trajectory_output( trajectory_file_name , freq_traj_output_ps * 1000 , append_trajectory , checkpoint , freq_checkpoint_ps * 1000 )
+
 
 for i in range( int(simulation_time_ns * 1000 / freq_traj_output_ps ) ):
     state = MMsys.simmd.context.getState(getEnergy=True,getForces=True,getVelocities=False,getPositions=True)
@@ -130,11 +151,11 @@ for i in range( int(simulation_time_ns * 1000 / freq_traj_output_ps ) ):
     #**********  Constant Voltage Simulation ****
     elif simulation_type == "Constant_V":
         # call Poisson solver to print charges ...
-        MMsys.Poisson_solver_fixed_voltage( Niterations=2 , compute_intermediate_forces = True ,  print_flag=True )
+        MMsys.Poisson_solver_fixed_voltage( Niterations=1 , compute_intermediate_forces = True ,  print_flag=True )
 
         for j in range( int(freq_traj_output_ps * 1000 / freq_charge_update_fs ) ):
             # Fixed Voltage Electrostatics ..
-            MMsys.Poisson_solver_fixed_voltage( Niterations=2 , compute_intermediate_forces = True )
+            MMsys.Poisson_solver_fixed_voltage( Niterations=1 , compute_intermediate_forces = True )
             MMsys.simmd.step( freq_charge_update_fs )
         if write_charges :
             # write charges...

@@ -3,13 +3,13 @@ from simtk.openmm import *
 from simtk.unit import *
 from sys import stdout
 #******* Fixed voltage routines
-from .Fixed_Voltage_routines import *
+from Fixed_Voltage_routines import *
 #******* electrode exclusions routines
-from .electrode_exclusions import *
+from electrode_exclusions import *
 #******** contains parent class
-from .shared.MM_class_base import *
+from shared.MM_class_base import *
 #******** exclusions for force field 
-from .shared.MM_exclusions_base import *
+from shared.MM_exclusions_base import *
 #*****************
 
 import random

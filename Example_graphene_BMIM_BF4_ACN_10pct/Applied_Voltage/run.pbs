@@ -4,7 +4,7 @@
 #PBS -o energies.$PBS_JOBID
 #PBS -e error.$PBS_JOBID
 #PBS -l nodes=1:ppn=1:gpus=1:chemx
-#PBS -l walltime=24:00:00
+#PBS -l walltime=72:00:00
 
 cd $PBS_O_WORKDIR
 
